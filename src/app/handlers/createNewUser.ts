@@ -5,7 +5,7 @@ import {
   createHashedPassword,
   createJWT,
 } from "../modules/auth";
-import { sendEmail } from "../modules/sendEmail";
+import { sendEmail } from "../modules/email/sendEmail";
 
 export const createNewUser = async (req: Request, res: Response) => {
   const { name, email, password, phone } = req.body;
@@ -35,7 +35,7 @@ export const createNewUser = async (req: Request, res: Response) => {
       const emailToken = createEmailJWT(user.email);
       const link = `${ipAddress}/verify/${emailToken}`;
 
-      sendEmail(link, "Food APP", user.email);
+      sendEmail(link, "Food APP", user.email, user.name);
 
       const userData: any = { ...user };
       userData.token = token;
@@ -43,11 +43,7 @@ export const createNewUser = async (req: Request, res: Response) => {
       res.status(200).json(userData);
     }
   } catch (e: any) {
-    if (e.meta.target === "User_email_key") {
-      res.status(409).json({ error: "Email Exists" });
-    } else {
-      res.status(400).json({ error: "Internal Error" });
-      console.log(e.meta);
-    }
+    console.log(e);
+    return res.status(400).json(e.meta);
   }
 };

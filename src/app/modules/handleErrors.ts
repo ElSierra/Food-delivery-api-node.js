@@ -8,7 +8,8 @@ export const handleErrors = (
 ) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    res.status(404).json(errors);
+    console.log(errors)
+    res.status(400).json(errors);
   } else {
     next();
   }

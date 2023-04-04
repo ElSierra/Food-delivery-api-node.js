@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 import { template } from "./emailTemplate";
 
-export const sendEmail = (link: string, website: string, email: string) => {
+export const sendEmail = (link: string, website: string, email: string, name : string) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -12,9 +12,9 @@ export const sendEmail = (link: string, website: string, email: string) => {
 
   var mailOptions = {
     from: process.env.EMAIL,
-    to: "hojoisaac@gmail.com",
+    to: email,
     subject: `Verify your Email for ${website}`,
-    html: template(link, website),
+    html: template(link, name),
   };
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {

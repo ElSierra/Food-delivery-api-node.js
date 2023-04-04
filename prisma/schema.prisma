@@ -16,6 +16,7 @@ model User {
   phone     String
   name      String
   verified  Boolean
+  OTP       Int     @default(0)
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
