@@ -1,4 +1,4 @@
-import { body, query } from "express-validator";
+import { body, query, param } from "express-validator";
 
 export const signupValidation = [
   body("name")
@@ -53,4 +53,16 @@ export const otpValidation = [
     .withMessage("OTP must be a 4-digit number.")
     .isLength({ min: 4, max: 4 })
     .withMessage("OTP must be a 4-digit number."),
+];
+
+export const resetPasswordValidation = [
+  body("email")
+    .exists()
+    .withMessage("Email parameter is required.")
+    .isEmail()
+    .withMessage("Email parameter is required."),
+];
+
+export const emailJWTValidation = [
+  param("token").exists().isJWT().withMessage("Invalid"),
 ];

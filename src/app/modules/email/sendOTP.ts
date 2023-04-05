@@ -1,5 +1,6 @@
-import nodemailer from "nodemailer";
+
 import { otpTemplate } from "./otpTemplate";
+import { transporter } from "../constant/transporterInit";
 
 export const sendOTP = (
   otp: number,
@@ -7,13 +8,6 @@ export const sendOTP = (
   email: string,
   name: string
 ) => {
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.EMAIL,
-      pass: process.env.PASSWORD,
-    },
-  });
 
   var mailOptions = {
     from: process.env.EMAIL,

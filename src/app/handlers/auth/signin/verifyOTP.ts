@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import prisma from "../../prisma/init";
-import { createJWT } from "../modules/auth";
-import { generateOTP } from "../modules/generateOTP";
+import prisma from "../../../../prisma/init";
+import { createJWT } from "../../../modules/auth";
+import { generateOTP } from "../../../modules/generateOTP";
 
 export const verifyOTP = async (
   req: Request,
@@ -19,7 +19,7 @@ export const verifyOTP = async (
     });
 
     if (user) {
-      console.log(user.OTP)
+      console.log(user.OTP);
       if (user.OTP.toString() === otp) {
         const { password, OTP, ...userData } = user;
 
@@ -32,7 +32,7 @@ export const verifyOTP = async (
           },
         });
         const token = { token: createJWT(user) };
-        return res.status(200).json({ user: userData, token: token });
+        return res.status(200).json({ user: userData, ...token });
       } else {
         return res.status(401).json({ msg: "Invalid OTP" });
       }
