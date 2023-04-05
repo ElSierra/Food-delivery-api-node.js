@@ -1,9 +1,15 @@
-# TS-NODE-STARTER
+# 🍰 FOOD-DELIVERY-API
 
-💻 A simple Express + TS NODE STARTER PROJECT
+## 👁️ Needed Environmental Variables
 
-## How to use ?
-
-change ts-server 👇🏾 to project name.
-
-`git clone https://github.com/ElSierra/ts-node-starter.git ts-server`
+| Key           | Description                                               |
+| ------------- | --------------------------------------------------------- |
+| DATABASE_URL  | The URL for the MongoDB database used by a food API       |
+| SECRET        | A secret key for the food API                             |
+| PORT          | The port number for the food API server                   |
+| WEBSITE_URL   | The URL for the website hosting the food API              |
+| EMAIL         | The email address used for authentication in the food API |
+| PASSWORD      | The password used for authentication in the food API      |
+| CLIENT_SECRET | The client secret for accessing a Google API              |
+| CLIENT_ID     | The client ID for accessing a Google API                  |
+| REFRESH_TOKEN | The refresh token used for accessing a Google API         |
