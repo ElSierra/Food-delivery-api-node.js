@@ -1,6 +1,6 @@
 # 🍰 FOOD-DELIVERY-API
 
-### 👁️ Needed Environmental Variables
+## 👁️ Needed Environmental Variables
 
 | Key           | Description                                               |
 | ------------- | --------------------------------------------------------- |
