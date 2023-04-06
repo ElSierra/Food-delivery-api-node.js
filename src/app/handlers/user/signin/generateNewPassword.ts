@@ -2,8 +2,9 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
 import { confirmationTemplate } from "../signup/confirmationTemplate";
-import { AddPasswordToDB } from "../../../modules/handlePasswordReset";
-import { generateStrongPassword } from "../../../modules/generateStrongPassword";
+import { generateStrongPassword } from "../../../modules/auth/generateStrongPassword";
+import { AddPasswordToDB } from "../../../modules/auth/handlePasswordReset";
+
 
 export const generateNewPassword = async (req: Request, res: Response) => {
   const { token } = req.params;

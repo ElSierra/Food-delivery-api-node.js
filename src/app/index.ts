@@ -4,8 +4,7 @@ import morgan from "morgan";
 import cors from "cors";
 import router from "./router";
 import prisma from "../prisma/init";
-import { createNewUser } from "./handlers/auth/signup/createNewUser";
-import { handleErrors } from "./modules/handleErrors";
+
 import {
   emailJWTValidation,
   loginValidation,
@@ -13,18 +12,21 @@ import {
   resetPasswordValidation,
   signupValidation,
 } from "./handlers/auth/module/inputValidation";
-import { signInUser } from "./handlers/auth/signin/signInUser";
-import { verifyEmail } from "./handlers/auth/signup/verifyEmail";
+import { signInUser } from "./handlers/user/signin/signInUser";
+
 import { dropDatabase } from "./modules/dropMongo";
 
-import { checkVerificationStream } from "./modules/verifyStreams";
-import { generateOTP } from "./modules/generateOTP";
-import { verifyOTP } from "./handlers/auth/signin/verifyOTP";
-import { protect } from "./modules/auth";
+
+import { verifyOTP } from "./handlers/user/signin/verifyOTP";
+import { blockJWT, protect } from "./modules/auth/auth";
 import { apiLimiter } from "./modules/apiLimiter";
-import { passwordReset } from "./handlers/auth/signin/passwordReset";
-import { generateNewPassword } from "./handlers/auth/signin/generateNewPassword";
-import { generateStrongPassword } from "./modules/generateStrongPassword";
+import { passwordReset } from "./handlers/user/signin/passwordReset";
+import { generateNewPassword } from "./handlers/user/signin/generateNewPassword";
+
+import client from "../redis/init";
+import { verifyEmail } from "./handlers/user/signup/verifyEmail";
+import { createNewUser } from "./handlers/user/signup/createNewUser";
+import { handleErrors } from "./modules/auth/handleErrors";
 
 const app = express();
 app.use(cors());
@@ -32,15 +34,25 @@ app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {
-  const ipAddress = req.socket.remoteAddress;
-  console.log(
-    "🚀 ~ file: index.ts:23 ~ app.get ~ ipAddress:",
-    ipAddress?.split(":")
-  );
+(async () => {
+  client.on("error", (err) => console.log("Redis Client Error", err));
+
+  await client.connect().then((e) => {
+    console.log("connected");
+  });
+})();
+
+app.get("/", async (req, res) => {
+
+  // const ipAddress = req.socket.remoteAddress;
+  // console.log(
+  //   "🚀 ~ file: index.ts:23 ~ app.get ~ ipAddress:",
+  //   ipAddress?.split(":")
+  // );
 
   res.status(200).json({ msg: "hello" });
 });
+
 app.use(apiLimiter);
 app.post("/api/auth/signup", signupValidation, handleErrors, createNewUser);
 app.post("/api/auth/login", loginValidation, handleErrors, signInUser);
@@ -56,7 +68,7 @@ app.put(
 app.get("/drop", dropDatabase);
 
 //checkVerificationStream("642b3dd392a744e5f57c1e4b");
-app.use("/api", protect, router);
+app.use("/api", blockJWT, protect, router);
 
 // app.post("/auth/login", createNewUser);
 export default app;

@@ -4,8 +4,10 @@ import {
   createEmailJWT,
   createHashedPassword,
   createJWT,
-} from "../../../modules/auth";
+} from "../../../modules/auth/auth";
 import { sendEmail } from "../../../modules/email/sendEmail";
+
+const DEFAULT_EXPIRATION = 3600;
 
 export const createNewUser = async (req: Request, res: Response) => {
   const { name, email, password, phone } = req.body;

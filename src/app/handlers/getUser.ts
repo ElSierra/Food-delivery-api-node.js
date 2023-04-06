@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import prisma from "../../prisma/init";
 
+
 export const getUser = async (req: any, res: Response) => {
   console.log(req.user);
   const user = await prisma.user.findFirst({
@@ -12,7 +13,9 @@ export const getUser = async (req: any, res: Response) => {
       email: true,
       verified: true,
       phone: true,
+      profile: true,
       OTP: true,
+      orders: true,
     },
   });
 
@@ -21,5 +24,4 @@ export const getUser = async (req: any, res: Response) => {
       user,
     });
   }
-  
 };

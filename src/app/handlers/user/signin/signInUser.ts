@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import prisma from "../../../../prisma/init";
-import { compareHashedPassword, createJWT } from "../../../modules/auth";
-import { generateOTP } from "../../../modules/generateOTP";
-import { createAddOTP } from "../../../modules/handleOTP";
+import { compareHashedPassword, createJWT } from "../../../modules/auth/auth";
+import { createAddOTP } from "../../../modules/auth/handleOTP";
+import { generateOTP } from "../../../modules/auth/generateOTP";
+
 
 export const signInUser = async (
   req: Request,
@@ -18,7 +19,7 @@ export const signInUser = async (
         email: email,
       },
     });
-    console.log("🚀 ~ file: signInUser.ts:21 ~ user:", user);
+
 
     if (user) {
       if (await compareHashedPassword(password, user.password)) {

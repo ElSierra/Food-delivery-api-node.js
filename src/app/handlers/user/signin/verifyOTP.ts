@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import prisma from "../../../../prisma/init";
-import { createJWT } from "../../../modules/auth";
-import { generateOTP } from "../../../modules/generateOTP";
+import { createJWT } from "../../../modules/auth/auth";
+
 
 export const verifyOTP = async (
   req: Request,

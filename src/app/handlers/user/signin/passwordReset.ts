@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import prisma from "../../../../prisma/init";
 import { sendPasswordReset } from "../../../modules/email/sendPasswordReset";
-import { createEmailJWT } from "../../../modules/auth";
+import { createEmailJWT } from "../../../modules/auth/auth";
 
 export const passwordReset = async (req: Request, res: Response) => {
   const { email } = req.body;
