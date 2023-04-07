@@ -21,3 +21,8 @@
 - Create an endpoint for users to set their location.
 - Implement an endpoint to allow delete account.
   
+### End Points
+
+![Login](/Images/login.jpeg)
+
+![Login](/Images/signup.jpeg)
