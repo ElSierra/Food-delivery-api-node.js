@@ -64,5 +64,15 @@ export const resetPasswordValidation = [
 ];
 
 export const emailJWTValidation = [
-  param("token").exists().isJWT().withMessage("Invalid"),
+  param("token").exists().isJWT().withMessage("Invalid JWT"),
+];
+
+export const passwordChangeValidation = [
+  body("oldPassword").exists().isString().withMessage("Invalid"),
+  body("password")
+    .exists()
+    .isStrongPassword()
+    .withMessage(
+      "Password must be at least 8 characters long and include a mix of uppercase and lowercase letters, numbers, and symbols."
+    ),
 ];

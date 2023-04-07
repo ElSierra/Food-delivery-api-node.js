@@ -29,6 +29,7 @@ export const verifyOTP = async (
           },
           data: {
             OTP: 0,
+            verified: true
           },
         });
         const token = { token: createJWT(user) };

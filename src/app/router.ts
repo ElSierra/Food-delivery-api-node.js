@@ -3,6 +3,9 @@ import { Request } from "./../../node_modules/@types/express-serve-static-core/i
 import { Router } from "express";
 import { getUser } from "./handlers/getUser";
 import { logout } from "./handlers/logout/logout";
+import { passwordChangeValidation } from "./handlers/auth/module/inputValidation";
+import { passwordChange } from "./handlers/user/signin/passwordChange";
+import { handleErrors } from "./modules/auth/handleErrors";
 
 const router = Router();
 
@@ -11,4 +14,5 @@ router.get("/home", (req: Request, res: Response) => {
 });
 router.get("/auth/user", getUser);
 router.get("/auth/logout", logout);
+router.put("/auth/change-password", passwordChangeValidation,handleErrors, passwordChange);
 export default router;
