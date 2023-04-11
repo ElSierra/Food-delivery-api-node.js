@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,60 +8,108 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  email     String   @unique
-  phone     String
-  name      String
-  verified  Boolean  @default(false)
-  OTP       Int      @default(0)
-  password  String
-  profile   Profile?
-  orders    Orders[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  email         String       @unique
+  phone         String
+  name          String
+  verified      Boolean      @default(false)
+  OTP           Int          @default(0)
+  password      String
+
+  photo         String?
+  location   Location? @relation(fields: [locationId], references: [id])
+  orders        Orders[]
+  payment       Payment?     @relation(fields: [paymentId], references: [id])
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  locationId String?      @db.ObjectId
+  paymentId     String?      @db.ObjectId
 }
 
-model Profile {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  photo       String
-  coordinates String
-  user        User     @relation(fields: [userId], references: [id])
-  userId      String   @unique @db.ObjectId
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model Rider {
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  phone         String
+  photo         String
+  available     Boolean      @default(false)
+  location   Location? @relation(fields: [locationId], references: [id])
+  orders        Orders[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  locationId String?      @db.ObjectId
+}
+
+model Restaurant {
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  location   Location? @relation(fields: [locationId], references: [id])
+  photo         String
+  menu          Menu[]
+  orders        Orders[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  locationId String?      @db.ObjectId
+}
+
+model Menu {
+  id           String      @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  price        String
+  photo        String?
+  restaurant   Restaurant  @relation(fields: [restaurantId], references: [id])
+  restaurantId String      @db.ObjectId
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  MenuOrder    MenuOrder[]
 }
 
 model Orders {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
-  restaurantId String     @db.ObjectId
-  user         User       @relation(fields: [userId], references: [id])
-  userId       String     @db.ObjectId
-  rider        Rider      @relation(fields: [riderId], references: [id])
-  riderId      String     @db.ObjectId
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  restaurant   Restaurant  @relation(fields: [restaurantId], references: [id])
+  restaurantId String      @db.ObjectId
+  user         User        @relation(fields: [userId], references: [id])
+  userId       String      @db.ObjectId
+  rider        Rider?      @relation(fields: [riderId], references: [id])
+  riderId      String?     @db.ObjectId
+  foodOrder    MenuOrder[]
+  status       String
+  total        String
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
 }
 
-model Restaurant {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  address     String
-  coordinates String
-  photo       String
-  orders      Orders[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model MenuOrder {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  menu      Menu     @relation(fields: [menuId], references: [id])
+  menuId    String   @db.ObjectId
+  quantity  Int
+  order     Orders   @relation(fields: [orderId], references: [id])
+  orderId   String   @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model Rider {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  phone       String
-  photo       String
-  coordinates String
-  orders      Orders[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model Payment {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  cardHolder String
+  cardNumber String
+  expiryDate String
+  cvv        String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User[]
+}
+
+model Location {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  latitude  String   @default("0")
+  longitude String   @default("0")
+  address   String
+  createdAt DateTime @default(now())
+
+  User       User[]
+  Rider      Rider[]
+  Restaurant Restaurant[]
 }

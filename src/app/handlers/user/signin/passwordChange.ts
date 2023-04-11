@@ -1,11 +1,12 @@
-import { Response } from "express";
+import { Request, Response } from "express";
 import prisma from "../../../../prisma/init";
 import {
   compareHashedPassword,
   createHashedPassword,
 } from "../../../modules/auth/auth";
+import { AuthenticatedRequest } from "../../../../interface";
 
-export const passwordChange = async (req: any, res: Response) => {
+const passwordChange = async (req: any, res: Response) => {
   const { password, oldPassword } = req.body;
   const { email, id } = req.user;
   console.log({ email, password, oldPassword });
@@ -40,3 +41,11 @@ export const passwordChange = async (req: any, res: Response) => {
     return res.status(401).json({ error: e });
   }
 };
+
+export const passwordChangeHandler = (req: Request, res: Response) => {
+  // Cast the request object to an AuthenticatedRequest object
+  const authenticatedReq = req as AuthenticatedRequest;
+
+  // Call the updateProfile function with the authenticatedReq object
+  passwordChange(authenticatedReq, res);
+}

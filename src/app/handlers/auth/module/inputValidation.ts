@@ -76,3 +76,9 @@ export const passwordChangeValidation = [
       "Password must be at least 8 characters long and include a mix of uppercase and lowercase letters, numbers, and symbols."
     ),
 ];
+
+export const locationUpdateValidation = [
+  body("location").exists().isLatLong().withMessage("Invalid location format."),
+
+  body("address").exists().withMessage("Invalid address format."),
+];

@@ -27,6 +27,7 @@ import client from "../redis/init";
 import { verifyEmail } from "./handlers/user/signup/verifyEmail";
 import { createNewUser } from "./handlers/user/signup/createNewUser";
 import { handleErrors } from "./modules/auth/handleErrors";
+import { populateRestauarnt } from "./handlers/restaurant/populateRestaurant";
 
 const app = express();
 app.use(cors());
@@ -39,6 +40,8 @@ app.use(express.urlencoded({ extended: true }));
 
   await client.connect().then((e) => {
     console.log("connected");
+  }).catch(e=>{
+    console.log(`error is ${e}`)
   });
 })();
 
@@ -66,6 +69,7 @@ app.put(
   passwordReset
 );
 app.get("/drop", dropDatabase);
+app.get('/populate', populateRestauarnt)
 
 //checkVerificationStream("642b3dd392a744e5f57c1e4b");
 app.use("/api", blockJWT, protect, router);

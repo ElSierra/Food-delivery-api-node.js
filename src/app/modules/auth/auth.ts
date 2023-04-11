@@ -14,9 +14,13 @@ export const compareHashedPassword = (
   return bcrypt.compare(password, hashPassword);
 };
 
-export const createJWT = (user: { email: string; id: string }) => {
+export const createJWT = (user: {
+  email: string;
+  id: string;
+  verified: boolean;
+}) => {
   const token = jwt.sign(
-    { email: user.email, id: user.id },
+    { email: user.email, id: user.id, verified: user.verified },
 
     process.env.SECRET || "",
     { expiresIn: "7d" }
@@ -30,7 +34,7 @@ export const createEmailJWT = (email: string) => {
     { email },
 
     process.env.SECRET || "",
-    { expiresIn: "5h" }
+    { expiresIn: "1h" }
   );
 
   return token;
@@ -40,12 +44,12 @@ export const protect = (req: any, res: Response, next: NextFunction) => {
   const bearer = req.headers.authorization;
 
   if (!bearer) {
-    return res.status(401).json({ message: "Unauthorized" });
+    return res.status(401).json({ msg: "Unauthorized" });
   }
   const [, token] = bearer.split(" ");
 
   if (!token) {
-    return res.status(401).json({ message: "invalid token" });
+    return res.status(401).json({ msg: "invalid token" });
   }
   try {
     const user = jwt.verify(token, process.env.SECRET || "");
@@ -54,7 +58,7 @@ export const protect = (req: any, res: Response, next: NextFunction) => {
     next();
   } catch (e) {
     console.error(e);
-    return res.status(401).json({ message: "invalid token" });
+    return res.status(401).json({ msg: "invalid token" });
   }
 };
 
@@ -66,19 +70,19 @@ export const blockJWT = async (
   const bearer = req.headers.authorization;
 
   if (!bearer) {
-    return res.status(401).json({ message: "Unauthorized" });
+    return res.status(401).json({ msg: "Unauthorized" });
   }
 
   const [, token] = bearer.split(" ");
   if (!token) {
-    return res.status(401).json({ message: "invalid token" });
+    return res.status(401).json({ msg: "invalid token" });
   }
 
   client
     .get(token)
     .then((result) => {
       if (result) {
-        return res.status(401).json({ message: "invalid token" });
+        return res.status(401).json({ msg: "invalid token" });
       }
       next();
     })
@@ -86,4 +90,17 @@ export const blockJWT = async (
       console.log({ error: e });
       next();
     });
+};
+
+export const checkVerified = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
+  const { verified } = req.user;
+  if (verified) {
+    next();
+  } else {
+    return res.status(401).json({ msg: "User not verified" });
+  }
 };

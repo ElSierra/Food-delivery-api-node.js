@@ -23,17 +23,12 @@ export const signInUser = async (
 
     if (user) {
       if (await compareHashedPassword(password, user.password)) {
-        // const userData = {
-        //   phone: user.phone,
-        //   email: user.email,
-        //   name: user.name,
-        //   id: user.id,
-        //   verified: user.verified,
-        // };
+
 
         createAddOTP(user.email, generateOTP());
-        res.status(200).json({ msg: "OTP Needed to Complete login" });
+        res.status(200).json({ msg: "Check your email, expires in 10 minutes" });
       } else {
+        console.log('incorrect')
         res.status(401).json({ error: "Invalid email or password" });
       }
     } else {
@@ -41,5 +36,6 @@ export const signInUser = async (
     }
   } catch (e) {
     res.status(400).json({ e });
+    console.log(e)
   }
 };
