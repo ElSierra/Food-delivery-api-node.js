@@ -3,13 +3,14 @@ export const otpTemplate = (otp: string, name:string, email: string) => {
   <html lang="en">
   <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/qc-black.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verification Code</title>
     <style>
       /* Main body styling */
       body {
         margin: 0;
-        padding: 0;
+        padding: 0; 
         font-family: Arial, sans-serif;
         background-color: #f6f6f6;
         color: #4d4d4d;

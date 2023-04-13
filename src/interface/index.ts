@@ -18,3 +18,15 @@ export const userResponse = {
   payment: true,
   orders: true,
 };
+
+export interface ServerToClientEvents {
+  message: (text: string) => void;
+  location: (text: string) => void;
+  verifyCheck: (text: boolean) => void;
+}
+
+export interface ClientToServerEvents {
+  message: (text: string) => void;
+  location: (text: string) => void;
+  verifyCheck: (text: string) => void;
+}

@@ -36,10 +36,10 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
 (async () => {
-  client.on("error", (err) => console.log("Redis Client Error", err));
+  client.on("error", (err) => console.log("❌ Redis Client Error", err));
 
   await client.connect().then((e) => {
-    console.log("connected");
+    console.log("🚀 connected");
   }).catch(e=>{
     console.log(`error is ${e}`)
   });
