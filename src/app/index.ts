@@ -16,7 +16,6 @@ import { signInUser } from "./handlers/user/signin/signInUser";
 
 import { dropDatabase } from "./modules/dropMongo";
 
-
 import { verifyOTP } from "./handlers/user/signin/verifyOTP";
 import { blockJWT, protect } from "./modules/auth/auth";
 import { apiLimiter } from "./modules/apiLimiter";
@@ -28,8 +27,12 @@ import { verifyEmail } from "./handlers/user/signup/verifyEmail";
 import { createNewUser } from "./handlers/user/signup/createNewUser";
 import { handleErrors } from "./modules/auth/handleErrors";
 import { populateRestauarnt } from "./handlers/restaurant/populateRestaurant";
+import path from "path";
+import fs from "fs";
 
 const app = express();
+
+const rootDir = path.resolve(__dirname, "../..");
 app.use(cors());
 app.use(morgan("dev"));
 app.use(bodyParser.json());
@@ -38,15 +41,17 @@ app.use(express.urlencoded({ extended: true }));
 (async () => {
   client.on("error", (err) => console.log("❌ Redis Client Error", err));
 
-  await client.connect().then((e) => {
-    console.log("🚀 connected");
-  }).catch(e=>{
-    console.log(`error is ${e}`)
-  });
+  await client
+    .connect()
+    .then((e) => {
+      console.log("🚀 connected");
+    })
+    .catch((e) => {
+      console.log(`error is ${e}`);
+    });
 })();
 
 app.get("/", async (req, res) => {
-
   // const ipAddress = req.socket.remoteAddress;
   // console.log(
   //   "🚀 ~ file: index.ts:23 ~ app.get ~ ipAddress:",
@@ -69,7 +74,16 @@ app.put(
   passwordReset
 );
 app.get("/drop", dropDatabase);
-app.get('/populate', populateRestauarnt)
+app.get("/populate", populateRestauarnt);
+
+app.get("/pic/:id", (req, res) => {
+  const { id } = req.params;
+
+  if (fs.existsSync(path.join(rootDir, "/uploads/", `${id}`))) {
+   return res.sendFile(path.join(rootDir, "/uploads/", `${id}`));
+  }
+ return res.sendFile(path.join(rootDir, "/uploads/", `nopic.png`));
+});
 
 //checkVerificationStream("642b3dd392a744e5f57c1e4b");
 app.use("/api", blockJWT, protect, router);

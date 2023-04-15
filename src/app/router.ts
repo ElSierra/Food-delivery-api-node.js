@@ -13,8 +13,11 @@ import { updateLocationHandler } from "./handlers/user/profile/updateLocation";
 import { checkVerified } from "./modules/auth/auth";
 import { getRestaurantsAll } from "./handlers/restaurant/getAllRestaurants";
 import { getRestaurantsByName } from "./handlers/restaurant/getRestaurantsByName";
-import { upload } from "./modules/profile/mutler";
-import { updateProfilePictureHandler } from "./handlers/user/profile/uploadProfilePicture";
+import { upload } from "./modules/mutler/mutler";
+import {
+  updateProfilePic,
+  uploadPhoto,
+} from "./handlers/user/profile/uploadProfilePicture";
 
 const router = Router();
 
@@ -37,15 +40,11 @@ router.put(
   passwordChangeHandler
 );
 router.put(
-  "/auth/update-profile",
+  "/auth/update-location",
   locationUpdateValidation,
   handleErrors,
   updateLocationHandler
 );
 
-router.put(
-  "/upload-avatar",
-  upload.single("image"),
-  updateProfilePictureHandler
-);
+router.put("/upload-avatar", uploadPhoto, updateProfilePic);
 export default router;

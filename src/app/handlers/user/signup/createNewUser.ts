@@ -33,9 +33,10 @@ export const createNewUser = async (req: Request, res: Response) => {
 
     if (user) {
       const token = createJWT(user);
+      const url = req.protocol + "://" + req.get("host");
       //const ipAddress = req.socket.remoteAddress?.split(":")[3];
       const emailToken = createEmailJWT(user.email);
-      const link = `${process.env.WEBSITE_URL}/verify/${emailToken}`;
+      const link = `${url}/verify/${emailToken}`;
 
       sendEmail(link, "Food APP", user.email, user.name);
 

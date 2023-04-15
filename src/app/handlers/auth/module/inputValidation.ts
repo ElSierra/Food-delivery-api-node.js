@@ -1,4 +1,4 @@
-import { body, query, param } from "express-validator";
+import { body, query, param, } from "express-validator";
 
 export const signupValidation = [
   body("name")
@@ -82,3 +82,7 @@ export const locationUpdateValidation = [
 
   body("address").exists().withMessage("Invalid address format."),
 ];
+
+export const updateProfilePicValidation = [
+
+]

@@ -23,6 +23,7 @@
     "@types/node": "latest",
     "@types/nodemailer": "^6.4.7",
     "@types/otp-generator": "^4.0.0",
+    "@types/uuid": "^9.0.1",
     "prisma": "^4.12.0",
     "ts-node": "latest",
     "typescript": "latest"
@@ -44,6 +45,7 @@
     "nodemailer": "^6.9.1",
     "otp-generator": "^4.0.1",
     "redis": "^4.6.5",
-    "socket.io": "^4.6.1"
+    "socket.io": "^4.6.1",
+    "uuid": "^9.0.0"
   }
 }
