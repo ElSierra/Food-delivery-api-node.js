@@ -46,7 +46,8 @@ export const createNewUser = async (req: Request, res: Response) => {
       res.status(200).json(userData);
     }
   } catch (e: any) {
-    console.log(e.meta);
+    console.log(e)
+
     return res.status(400).json(e.meta);
   }
 };

@@ -6,6 +6,31 @@ export const updateProfilePic = async (req: any, res: Response) => {
   const url = req.protocol + "://" + req.get("host");
 
   try {
+    const checkgetOldPic = await prisma.user.findUnique({
+      where: {
+        id: req.user.id,
+      },
+      select: {
+        photo: true,
+      },
+    });
+    // if (!checkgetOldPic){
+    //   return res.status(400).json({msg: 'Error occurred'})
+    // }
+    const pictureName = checkgetOldPic?.photo?.split("/");
+    console.log(
+      "🚀 ~ file: uploadProfilePicture.ts:21 ~ updateProfilePic ~ pictureName:",
+      pictureName
+    );
+
+    if (pictureName) {
+      fs.unlink(`uploads/${pictureName[pictureName.length - 1]}`, (err) => {
+        if (err) {
+        }
+
+        console.log("Delete File successfully.");
+      });
+    }
     const userWithProfilePicture = await prisma.user.update({
       where: {
         id: req.user.id,
@@ -31,47 +56,29 @@ export const uploadPhoto = (req: any, res: Response, next: NextFunction) => {
   uploadHandler(req, res, (error) => {
     if (!error) {
       const file = req.file;
-      console.log("🚀 ~ file: uploadProfilePicture.ts:34 ~ uploadHandler ~ file:", file)
+      console.log(
+        "🚀 ~ file: uploadProfilePicture.ts:34 ~ uploadHandler ~ file:",
+        file
+      );
 
       if (!file) {
         return res.status(400).json({ msg: "Please upload a photo" });
- 
       } else {
- 
         fs.access(file.path, fs.constants.F_OK, (err) => {
           if (err) {
             res.status(400).json({ msg: "Please upload a file", err });
-        
           } else {
             next();
-        
           }
         });
       }
     } else {
       const errorMessage = new Error(error);
 
-      if (errorMessage.message){
-        const [,msg] = errorMessage.message.split(':')
-        return res.status(400).json( {msg} );
+      if (errorMessage.message) {
+        const [, msg] = errorMessage.message.split(":");
+        return res.status(400).json({ msg });
       }
-
     }
   });
 };
-// const updatedUser = prisma.user.update({
-//   where: {
-//     id : req.user.id,
-//   },
-//   data: {
-//     photo:
-//   }
-// })
-
-// export const updateProfilePictureHandler = (req: Request, res: Response) => {
-//   // Cast the request object to an AuthenticatedRequest object
-//   const authenticatedReq = req as AuthenticatedRequest;
-
-//   // Call the updateProfile function with the authenticatedReq object
-//   updateProfilePic(authenticatedReq, res);
-// };
