@@ -1,4 +1,4 @@
-import { body, query, param, } from "express-validator";
+import { body, query, param } from "express-validator";
 
 export const signupValidation = [
   body("name")
@@ -83,6 +83,13 @@ export const locationUpdateValidation = [
   body("address").exists().withMessage("Invalid address format."),
 ];
 
-export const updateProfilePicValidation = [
+export const orderFoodValidation = [
+  body("menuId").exists().isMongoId().withMessage("Not Valid MenuId"),
+  body("restaurantId").exists().isMongoId().withMessage("Not Valid MenuId"),
+  body("quantity").exists().isInt({ min: 1 }).withMessage("Not number"),
+];
 
+export const makePaymentValidation = [
+  body("orderId").exists().isMongoId().withMessage("Not Valid MenuId"),
+  body("amount").exists().isFloat({ min: 10 }).withMessage("Not valid amount"),
 ]

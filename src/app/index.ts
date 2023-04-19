@@ -29,6 +29,13 @@ import { handleErrors } from "./modules/auth/handleErrors";
 import { populateRestauarnt } from "./handlers/restaurant/populateRestaurant";
 import path from "path";
 import fs from "fs";
+import { testStream } from "./handlers/testStreaming/testStream";
+import { createNewRider } from "./handlers/rider/signup/createNewRider";
+import { SignInRider as signInRider } from "./handlers/rider/signin/signinRider";
+import { verifyEmailRider } from "./handlers/rider/signup/verifyEmail";
+import { verifyOTPRider } from "./handlers/rider/signin/verifyOTP";
+import { generateNewPasswordRider } from "./handlers/rider/signin/generateNewPassword";
+import { passwordResetRider } from "./handlers/rider/signin/passwordReset";
 
 const app = express();
 
@@ -62,6 +69,9 @@ app.get("/", async (req, res) => {
 });
 
 app.use(apiLimiter);
+
+
+//? User EndPoints
 app.post("/api/auth/signup", signupValidation, handleErrors, createNewUser);
 app.post("/api/auth/login", loginValidation, handleErrors, signInUser);
 app.get("/verify/:token", emailJWTValidation, handleErrors, verifyEmail);
@@ -73,18 +83,51 @@ app.put(
   handleErrors,
   passwordReset
 );
+
+
+//? Rider EndPoints
+app.post(
+  "/api/auth/signup-rider",
+  signupValidation,
+  handleErrors,
+  createNewRider
+);
+app.post("/api/auth/login-rider", loginValidation, handleErrors, signInRider);
+app.get(
+  "/verify-rider/:token",
+  emailJWTValidation,
+  handleErrors,
+  verifyEmailRider
+);
+app.get(
+  "/reset-rider/:token",
+  emailJWTValidation,
+  handleErrors,
+  generateNewPasswordRider
+);
+app.put("/api/auth/otp-rider", otpValidation, handleErrors, verifyOTPRider);
+app.put(
+  "/api/auth/reset-password",
+  resetPasswordValidation,
+  handleErrors,
+  passwordResetRider
+);
+
+//? Restaurant EndPoints
 app.get("/drop", dropDatabase);
 app.get("/populate", populateRestauarnt);
 
+
+//? Misc EndPoints
 app.get("/pic/:id", (req, res) => {
   const { id } = req.params;
 
   if (fs.existsSync(path.join(rootDir, "/uploads/", `${id}`))) {
-   return res.sendFile(path.join(rootDir, "/uploads/", `${id}`));
+    return res.sendFile(path.join(rootDir, "/uploads/", `${id}`));
   }
- return res.sendFile(path.join(rootDir, "/uploads/", `nopic.png`));
+  return res.sendFile(path.join(rootDir, "/uploads/", `nopic.png`));
 });
-
+app.get("/testVideo", testStream);
 //checkVerificationStream("642b3dd392a744e5f57c1e4b");
 app.use("/api", blockJWT, protect, router);
 

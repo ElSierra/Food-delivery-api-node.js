@@ -16,7 +16,49 @@ export const userResponse = {
   photo: true,
   OTP: true,
   payment: true,
-  orders: true,
+  preferences: true,
+  balance: true,
+  orders: {
+    include: {
+      rider: {
+        select: {
+          location: true,
+          phone: true,
+          email: true,
+        },
+      },
+    },
+  },
+};
+
+export const riderResponse = {
+  id: true,
+  email: true,
+  name: true,
+  verified: true,
+  phone: true,
+  location: true,
+  photo: true,
+  OTP: true,
+  payment: true,
+  preferences: true,
+  balance: true,
+  orders: {
+    include: {
+      user: {
+        select: {
+          location: true,
+          phone: true,
+          email: true,
+        },
+      },
+      restaurant: {
+        select: {
+          location: true,
+        },
+      },
+    },
+  },
 };
 
 export interface ServerToClientEvents {

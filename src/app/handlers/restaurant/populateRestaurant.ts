@@ -70,21 +70,21 @@ export const populateRestauarnt = async (req: Request, res: Response) => {
     data: [
       {
         name: "Pizza",
-        price: "10",
+        price: 10,
         photo:
           "https://images.pexels.com/photos/708587/pexels-photo-708587.jpeg",
         restaurantId: sakaRestaurantId,
       },
       {
         name: "Burger",
-        price: "10",
+        price: 10,
         photo:
           "https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg",
         restaurantId: martosRestaurantId,
       },
       {
         name: "Sushi",
-        price: "10",
+        price: 10,
         photo:
           "https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg",
         restaurantId: sushiRestaurantId,

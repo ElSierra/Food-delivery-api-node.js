@@ -1,15 +1,15 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import prisma from "../../../../prisma/init";
-import { userResponse } from "../../../../interface";
+import { riderResponse } from "../../../../interface";
 
-export const getUser = async (req: any, res: Response) => {
+export const getRider = async (req: any, res: Response) => {
   console.log(req.user);
   try {
-  const user = await prisma.user.findFirst({
+  const user = await prisma.rider.findFirst({
     where: {
       email: req.user.email,
     },
-    select:userResponse
+    select: riderResponse,
   });
 
   if (user) {

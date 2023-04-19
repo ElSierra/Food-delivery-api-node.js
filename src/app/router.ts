@@ -6,6 +6,8 @@ import { logout } from "./handlers/logout/logout";
 import {
   passwordChangeValidation,
   locationUpdateValidation,
+  orderFoodValidation,
+  makePaymentValidation,
 } from "./handlers/auth/module/inputValidation";
 import { passwordChangeHandler } from "./handlers/user/signin/passwordChange";
 import { handleErrors } from "./modules/auth/handleErrors";
@@ -13,26 +15,26 @@ import { updateLocationHandler } from "./handlers/user/profile/updateLocation";
 import { checkVerified } from "./modules/auth/auth";
 import { getRestaurantsAll } from "./handlers/restaurant/getAllRestaurants";
 import { getRestaurantsByName } from "./handlers/restaurant/getRestaurantsByName";
-import { upload } from "./modules/mutler/mutler";
+
 import {
   updateProfilePic,
   uploadPhoto,
 } from "./handlers/user/profile/uploadProfilePicture";
+import { orderFood } from "./handlers/user/order/orderFood";
+import { makePayment } from "./handlers/user/order/makePayment";
+import { getRider } from "./handlers/rider/profile/getRider";
 
 const router = Router();
 
 router.get("/home", checkVerified, (req: Request, res: Response) => {
   res.status(200).json({ message: "Okay" });
 });
+
+
+//? User EndPoints
 router.get("/auth/user", getUser);
 router.get("/auth/logout", logout);
-router.get("/all-restaurants", (req, res) => {
-  if (req.query.name) {
-    return getRestaurantsByName(req, res);
-  } else {
-    return getRestaurantsAll(req, res);
-  }
-});
+
 router.put(
   "/auth/change-password",
   passwordChangeValidation,
@@ -45,6 +47,22 @@ router.put(
   handleErrors,
   updateLocationHandler
 );
+router.put("/order-food", orderFoodValidation, handleErrors, orderFood);
+router.put("/make-payment", makePaymentValidation, handleErrors, makePayment);
 
 router.put("/upload-avatar", uploadPhoto, updateProfilePic);
+
+
+
+//? Rider EndPoints
+router.get("/auth/rider", getRider);
+
+//? Restaurant EndPoints
+router.get("/all-restaurants", (req, res) => {
+  if (req.query.name) {
+    return getRestaurantsByName(req, res);
+  } else {
+    return getRestaurantsAll(req, res);
+  }
+});
 export default router;

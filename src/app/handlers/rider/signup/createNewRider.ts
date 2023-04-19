@@ -9,18 +9,29 @@ import { sendEmail } from "../../../modules/email/sendEmail";
 
 const DEFAULT_EXPIRATION = 3600;
 
-export const createNewUser = async (req: Request, res: Response) => {
+export const createNewRider = async (req: Request, res: Response) => {
   const { name, email, password, phone } = req.body;
 
   try {
-    const user = await prisma.user.create({
+    const user = await prisma.user.findFirst({
+      where: {
+        email,
+      },
+    });
+    if (user) {
+      return res
+        .status(400)
+        .json({
+          msg: "a user cannot be a rider too, delete your user account",
+        });
+    }
+    const rider = await prisma.rider.create({
       data: {
         name,
         verified: false,
         email,
         password: await createHashedPassword(password),
         phone,
-        balance: 0
       },
 
       select: {
@@ -32,22 +43,22 @@ export const createNewUser = async (req: Request, res: Response) => {
       },
     });
 
-    if (user) {
-      const token = createJWT(user);
+    if (rider) {
+      const token = createJWT(rider);
       const url = req.protocol + "://" + req.get("host");
       //const ipAddress = req.socket.remoteAddress?.split(":")[3];
-      const emailToken = createEmailJWT(user.email);
+      const emailToken = createEmailJWT(rider.email);
       const link = `${url}/verify/${emailToken}`;
 
-      sendEmail(link, "Food APP", user.email, user.name);
+      sendEmail(link, "Food APP", rider.email, rider.name);
 
-      const userData: any = { ...user };
-      userData.token = token;
+      const riderData: any = { ...rider };
+      riderData.token = token;
 
-      res.status(200).json(userData);
+      res.status(200).json(riderData);
     }
   } catch (e: any) {
-    console.log(e)
+    console.log(e);
 
     return res.status(400).json(e.meta);
   }

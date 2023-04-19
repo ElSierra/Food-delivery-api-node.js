@@ -7,6 +7,7 @@ export const getRestaurantsAll = async (req: Request, res: Response) => {
       include: {
         location: true,
         menu: true,
+        //orders: true
       },
     });
     if (restaurant) {
