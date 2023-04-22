@@ -8,42 +8,45 @@ datasource db {
 }
 
 model User {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  email       String    @unique
-  phone       String
-  name        String
-  verified    Boolean   @default(false)
-  OTP         Int       @default(0)
-  password    String
-  photo       String?
-  preferences Json?
-  balance     Float
-  location    Location? @relation(fields: [locationId], references: [id])
-  orders      Orders[]
-  payment     Payment?  @relation(fields: [paymentId], references: [id])
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  locationId  String?   @db.ObjectId
-  paymentId   String?   @db.ObjectId
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  email    String  @unique
+  phone    String
+  name     String
+  verified Boolean @default(false)
+  OTP      Int     @default(0)
+  password String
+  photo    String?
+
+  balance       Float
+  location      Location?    @relation(fields: [locationId], references: [id])
+  orders        Orders[]
+  payment       Payment?     @relation(fields: [paymentId], references: [id])
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  locationId    String?      @db.ObjectId
+  paymentId     String?      @db.ObjectId
+  prefrences    Preferences? @relation(fields: [preferencesId], references: [id])
+  preferencesId String?      @db.ObjectId @unique
 }
 
 model Rider {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  phone       String
-  email       String    @unique
-  password    String
-  photo       String?
-  balance     Float     @default(0)
-  verified    Boolean   @default(false)
-  OTP         Int       @default(0)
-  available   Boolean   @default(false)
-  preferences Json?
-  location    Location? @relation(fields: [locationId], references: [id])
-  orders      Orders[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  locationId  String?   @db.ObjectId
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  phone         String
+  email         String       @unique
+  password      String
+  photo         String?
+  balance       Float        @default(0)
+  verified      Boolean      @default(false)
+  OTP           Int          @default(0)
+  available     Boolean      @default(false)
+  preferences   Preferences? @relation(fields: [preferencesId], references: [id])
+  location      Location?    @relation(fields: [locationId], references: [id])
+  orders        Orders[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  locationId    String?      @db.ObjectId
+  preferencesId String?      @db.ObjectId @unique
 }
 
 model Restaurant {
@@ -121,10 +124,24 @@ model Location {
   Restaurant Restaurant[]
 }
 
+model Preferences {
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  mode         mode    @default(LIGHT)
+  emailUpdates Boolean @default(true)
+
+  User  User?
+  Rider Rider?
+}
+
 enum orderStatus {
   PENDING
   PAID
   PREPARING
   SHIPPED
   DELIVERED
+}
+
+enum mode {
+  DARK
+  LIGHT
 }

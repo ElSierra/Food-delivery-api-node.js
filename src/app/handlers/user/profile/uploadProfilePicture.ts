@@ -3,6 +3,7 @@ import { upload } from "../../../modules/mutler/mutler";
 import prisma from "../../../../prisma/init";
 import fs from "fs";
 export const updateProfilePic = async (req: any, res: Response) => {
+  console.log('gotten to the profile chnage pic')
   const url = req.protocol + "://" + req.get("host");
 
   try {

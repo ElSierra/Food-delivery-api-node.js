@@ -23,6 +23,7 @@ import {
 import { orderFood } from "./handlers/user/order/orderFood";
 import { makePayment } from "./handlers/user/order/makePayment";
 import { getRider } from "./handlers/rider/profile/getRider";
+import { setPrefsRider } from "./handlers/rider/profile/setPrefs";
 
 const router = Router();
 
@@ -56,6 +57,7 @@ router.put("/upload-avatar", uploadPhoto, updateProfilePic);
 
 //? Rider EndPoints
 router.get("/auth/rider", getRider);
+router.put("/auth/rider/updatePrefs", setPrefsRider)
 
 //? Restaurant EndPoints
 router.get("/all-restaurants", (req, res) => {

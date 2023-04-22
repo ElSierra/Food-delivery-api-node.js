@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import prisma from "../../../../prisma/init";
 import { createJWT } from "../../../modules/auth/auth";
-import { riderResponse } from "../../../../interface";
-
+import { riderResponse } from "../../../../../interface";
 
 export const verifyOTPRider = async (
   req: Request,
@@ -24,22 +23,21 @@ export const verifyOTPRider = async (
       if (rider.OTP.toString() === otp) {
         const { password, OTP, ...riderData } = rider;
 
-       const validatedRider = await prisma.rider.update({
+        const validatedRider = await prisma.rider.update({
           where: {
             email: rider.email,
           },
           data: {
             OTP: 0,
-            verified: true
+            verified: true,
           },
-          select: riderResponse
+          select: riderResponse,
         });
         const token = { token: createJWT(rider) };
         return res.status(200).json({ ...validatedRider, ...token });
       } else if (rider.OTP === 1) {
         return res.status(401).json({ msg: "OTP Expired" });
-      }
-      else {
+      } else {
         return res.status(401).json({ msg: "Invalid OTP" });
       }
     }

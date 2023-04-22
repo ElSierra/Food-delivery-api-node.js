@@ -1,11 +1,11 @@
 import { Response } from "express";
 import prisma from "../../../../prisma/init";
-import { userResponse } from "../../../../interface";
+import { userResponse } from "../../../../../interface";
 
 export const makePayment = async (req: any, res: Response) => {
   const { id } = req.user;
   const { amount, orderId } = req.body;
-console.log(id)
+  console.log(id);
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -19,11 +19,13 @@ console.log(id)
     console.log({ user });
     if (user) {
       const balance = user?.balance;
-      console.log("🚀 ~ file: makePayment.ts:22 ~ makePayment ~ balance:", balance)
+      console.log(
+        "🚀 ~ file: makePayment.ts:22 ~ makePayment ~ balance:",
+        balance
+      );
       if (balance >= Number(amount)) {
-        console.log('here')
-        const updatedOrder = await prisma.
-        orders.update({
+        console.log("here");
+        const updatedOrder = await prisma.orders.update({
           where: {
             id: orderId,
           },

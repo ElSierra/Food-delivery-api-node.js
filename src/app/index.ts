@@ -59,17 +59,16 @@ app.use(express.urlencoded({ extended: true }));
 })();
 
 app.get("/", async (req, res) => {
-  // const ipAddress = req.socket.remoteAddress;
-  // console.log(
-  //   "🚀 ~ file: index.ts:23 ~ app.get ~ ipAddress:",
-  //   ipAddress?.split(":")
-  // );
+  const ipAddress = req.socket.remoteAddress;
+  console.log(
+    "🚀 ~ file: index.ts:23 ~ app.get ~ ipAddress:",
+    ipAddress?.split(":")
+  );
 
   res.status(200).json({ msg: "hello" });
 });
 
 app.use(apiLimiter);
-
 
 //? User EndPoints
 app.post("/api/auth/signup", signupValidation, handleErrors, createNewUser);
@@ -83,7 +82,6 @@ app.put(
   handleErrors,
   passwordReset
 );
-
 
 //? Rider EndPoints
 app.post(
@@ -116,7 +114,6 @@ app.put(
 //? Restaurant EndPoints
 app.get("/drop", dropDatabase);
 app.get("/populate", populateRestauarnt);
-
 
 //? Misc EndPoints
 app.get("/pic/:id", (req, res) => {

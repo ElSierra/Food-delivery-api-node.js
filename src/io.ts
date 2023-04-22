@@ -1,5 +1,5 @@
 import { Server } from "socket.io";
-import { ClientToServerEvents, ServerToClientEvents } from "./interface";
+import { ClientToServerEvents, ServerToClientEvents } from "../interface";
 import { collection } from "./app/modules/auth/verifyStreams";
 import { ObjectId } from "mongodb";
 
@@ -10,7 +10,7 @@ io.on("connection", (socket) => {
   console.log(socket.id);
 
   socket.on("verifyCheck", async (id) => {
-    console.log(id)
+    console.log(id);
     try {
       const changeStream = collection.watch([
         {
@@ -22,7 +22,7 @@ io.on("connection", (socket) => {
 
       changeStream.on("change", (change: any) => {
         //console.log(change.updateDescription.updatedFields.verified)
-        
+
         if (change.updateDescription?.updatedFields?.verified) {
           //console.log(change); // Change object
           socket.emit("verifyCheck", true);
@@ -33,6 +33,5 @@ io.on("connection", (socket) => {
     }
   });
 });
-
 
 export default io;

@@ -40,7 +40,6 @@ export const riderResponse = {
   location: true,
   photo: true,
   OTP: true,
-  payment: true,
   preferences: true,
   balance: true,
   orders: {

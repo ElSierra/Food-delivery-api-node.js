@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "../../../../prisma/init";
-import { AuthenticatedRequest } from "../../../../interface";
-
-
+import { AuthenticatedRequest } from "../../../../../interface";
 
 const updateLocation = async (req: AuthenticatedRequest, res: Response) => {
   const { location, address }: { location: string; address: string } = req.body;

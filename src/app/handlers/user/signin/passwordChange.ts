@@ -4,7 +4,7 @@ import {
   compareHashedPassword,
   createHashedPassword,
 } from "../../../modules/auth/auth";
-import { AuthenticatedRequest } from "../../../../interface";
+import { AuthenticatedRequest } from "../../../../../interface";
 
 const passwordChange = async (req: any, res: Response) => {
   const { password, oldPassword } = req.body;
@@ -48,4 +48,4 @@ export const passwordChangeHandler = (req: Request, res: Response) => {
 
   // Call the updateProfile function with the authenticatedReq object
   passwordChange(authenticatedReq, res);
-}
+};
