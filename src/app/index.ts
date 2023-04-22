@@ -37,6 +37,7 @@ import { verifyOTPRider } from "./handlers/rider/signin/verifyOTP";
 import { generateNewPasswordRider } from "./handlers/rider/signin/generateNewPassword";
 import { passwordResetRider } from "./handlers/rider/signin/passwordReset";
 import requestIp from "request-ip";
+import axios from "axios";
 
 const app = express();
 
@@ -62,8 +63,16 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/", async (req, res) => {
   const ipAddress = requestIp.getClientIp(req);
   console.log(ipAddress);
-
-  res.status(200).json({ msg: "hello" });
+  axios
+    .get(
+      `https://ipgeolocation.abstractapi.com/v1/?api_key=${process.env.IP_KEY}`
+    )
+    .then((response) => {
+      res.status(200).json(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 });
 
 app.use(apiLimiter);
