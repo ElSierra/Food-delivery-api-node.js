@@ -36,6 +36,7 @@ import { verifyEmailRider } from "./handlers/rider/signup/verifyEmail";
 import { verifyOTPRider } from "./handlers/rider/signin/verifyOTP";
 import { generateNewPasswordRider } from "./handlers/rider/signin/generateNewPassword";
 import { passwordResetRider } from "./handlers/rider/signin/passwordReset";
+import requestIp from "request-ip";
 
 const app = express();
 
@@ -59,11 +60,8 @@ app.use(express.urlencoded({ extended: true }));
 })();
 
 app.get("/", async (req, res) => {
-  const ipAddress = req.socket.remoteAddress;
-  console.log(
-    "🚀 ~ file: index.ts:23 ~ app.get ~ ipAddress:",
-    ipAddress?.split(":")
-  );
+  const ipAddress = requestIp.getClientIp(req);
+  console.log(ipAddress);
 
   res.status(200).json({ msg: "hello" });
 });
