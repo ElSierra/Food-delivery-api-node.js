@@ -17,3 +17,7 @@ app.listen(Port, () => {
   // console.log('\x1b[34m%s\x1b[0m', `🚀 Server Started @: ${Port}`);
   console.log("🚀 Server Started @:", Port);
 });
+
+app.listen(2000,()=>{
+  console.log('here')
+})
