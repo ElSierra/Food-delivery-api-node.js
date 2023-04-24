@@ -61,18 +61,12 @@ app.use(express.urlencoded({ extended: true }));
 })();
 
 app.get("/", async (req, res) => {
-  const ipAddress = IP.address();
-  console.log(ipAddress);
-  axios
-    .get(
-      `https://ipgeolocation.abstractapi.com/v1/?api_key=${process.env.IP_KEY}&ip_address=${ipAddress}`
-    )
-    .then((response) => {
-      res.status(200).json(response.data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  res.status(200).json({ success: "👍 Okay" });
+});
+
+app.get("/:ip", async (req, res) => {
+  console.log({ ip: req.params.ip });
+  res.status(200).json({ ip: req.params.ip });
 });
 
 app.use(apiLimiter);
