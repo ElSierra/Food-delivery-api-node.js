@@ -25,7 +25,7 @@ model User {
   updatedAt     DateTime     @updatedAt
   locationId    String?      @db.ObjectId
   paymentId     String?      @db.ObjectId
-  prefrences    Preferences? @relation(fields: [preferencesId], references: [id])
+  preferences    Preferences? @relation(fields: [preferencesId], references: [id])
   preferencesId String?      @db.ObjectId @unique
 }
 
