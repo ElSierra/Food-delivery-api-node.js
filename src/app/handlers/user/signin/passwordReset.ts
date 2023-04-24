@@ -18,6 +18,7 @@ export const passwordReset = async (req: Request, res: Response) => {
       sendPasswordReset(link, "Food APP", user.email, user.name);
       return res.status(200).json({ msg: "check your email" });
     }
+    return res.status(401).json({ msg: "Email is not registered" });
   } catch (e) {
     return res.status(401).json({ msg: "Invalid email" });
   }
