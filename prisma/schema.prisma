@@ -26,7 +26,7 @@ model User {
   locationId    String?      @db.ObjectId
   paymentId     String?      @db.ObjectId
   preferences    Preferences? @relation(fields: [preferencesId], references: [id])
-  preferencesId String?      @db.ObjectId @unique
+  preferencesId String?      @db.ObjectId
 }
 
 model Rider {
@@ -46,7 +46,7 @@ model Rider {
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   locationId    String?      @db.ObjectId
-  preferencesId String?      @db.ObjectId @unique
+  preferencesId String?      @db.ObjectId 
 }
 
 model Restaurant {
@@ -129,8 +129,8 @@ model Preferences {
   mode         mode    @default(LIGHT)
   emailUpdates Boolean @default(true)
 
-  User  User?
-  Rider Rider?
+  User  User[]
+  Rider Rider[]
 }
 
 enum orderStatus {
