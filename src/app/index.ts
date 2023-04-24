@@ -36,10 +36,11 @@ import { verifyEmailRider } from "./handlers/rider/signup/verifyEmail";
 import { verifyOTPRider } from "./handlers/rider/signin/verifyOTP";
 import { generateNewPasswordRider } from "./handlers/rider/signin/generateNewPassword";
 import { passwordResetRider } from "./handlers/rider/signin/passwordReset";
-import IP from "ip";
-import axios from "axios";
+import http from 'http';
+
 
 const app = express();
+const server = http.createServer(app)
 
 const rootDir = path.resolve(__dirname, "../..");
 app.use(cors());
@@ -130,4 +131,4 @@ app.get("/testVideo", testStream);
 app.use("/api", blockJWT, protect, router);
 
 // app.post("/auth/login", createNewUser);
-export default app;
+export default server;

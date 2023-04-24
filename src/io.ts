@@ -2,17 +2,18 @@ import { Server } from "socket.io";
 import { ClientToServerEvents, ServerToClientEvents } from "../interface";
 import { collection } from "./app/modules/auth/verifyStreams";
 import { ObjectId } from "mongodb";
-import app from "./app";
-const server = require('http').createServer(app);
-const io = require('socket.io')(server);
+
+import server from "./app";
+
+const io = require("socket.io")(server);
 
 // const io = new Server<ClientToServerEvents, ServerToClientEvents>();
 
-io.on("connection", (socket:any) => {
+io.on("connection", (socket: any) => {
   socket.emit("message", "connected");
   console.log(socket.id);
 
-  socket.on("verifyCheck", async (id:any) => {
+  socket.on("verifyCheck", async (id: any) => {
     console.log(id);
     try {
       const changeStream = collection.watch([
