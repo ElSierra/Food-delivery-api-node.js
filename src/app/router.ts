@@ -18,7 +18,9 @@ import { getRestaurantsByName } from "./handlers/restaurant/getRestaurantsByName
 
 import {
   updateProfilePic,
+  updateProfilePicOcean,
   uploadPhoto,
+  uploadPhotoOcean,
 } from "./handlers/user/profile/uploadProfilePicture";
 import { orderFood } from "./handlers/user/order/orderFood";
 import { makePayment } from "./handlers/user/order/makePayment";
@@ -51,7 +53,7 @@ router.put(
 router.put("/order-food", orderFoodValidation, handleErrors, orderFood);
 router.put("/make-payment", makePaymentValidation, handleErrors, makePayment);
 
-router.put("/upload-avatar", uploadPhoto, updateProfilePic);
+router.put("/upload-avatar", uploadPhotoOcean, updateProfilePicOcean);
 
 
 

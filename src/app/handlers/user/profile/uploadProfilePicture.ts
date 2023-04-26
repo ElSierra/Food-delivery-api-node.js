@@ -1,9 +1,13 @@
 import { NextFunction, Request, Response } from "express";
-import { upload } from "../../../modules/mutler/mutler";
+import {
+  deleteOcean,
+  upload,
+  uploadOcean,
+} from "../../../modules/mutler/mutler";
 import prisma from "../../../../prisma/init";
 import fs from "fs";
 export const updateProfilePic = async (req: any, res: Response) => {
-  console.log('gotten to the profile chnage pic')
+  console.log("gotten to the profile chnage pic");
   const url = req.protocol + "://" + req.get("host");
 
   try {
@@ -37,7 +41,7 @@ export const updateProfilePic = async (req: any, res: Response) => {
         id: req.user.id,
       },
       data: {
-        photo: `${url}/pic/${req.file.filename}`,
+        photo: req.file.filename,
       },
     });
     if (userWithProfilePicture) {
@@ -82,4 +86,77 @@ export const uploadPhoto = (req: any, res: Response, next: NextFunction) => {
       }
     }
   });
+};
+export const uploadPhotoOcean = (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
+  const uploadHandler = uploadOcean.single("photo");
+
+  uploadHandler(req, res, (error) => {
+    if (!error) {
+      const file = req.file;
+      console.log(
+        "🚀 ~ file: uploadProfilePicture.ts:34 ~ uploadHandler ~ file:",
+        file
+      );
+
+      if (!file) {
+        return res.status(400).json({ msg: "Please upload a photo" });
+      } else {
+        next();
+      }
+    } else {
+      const errorMessage = new Error(error);
+
+      if (errorMessage.message) {
+        const [, msg] = errorMessage.message.split(":");
+        return res.status(400).json({ msg });
+      }
+    }
+  });
+};
+
+export const updateProfilePicOcean = async (req: any, res: Response) => {
+  console.log("gotten to the profile chnage pic");
+
+  try {
+    const checkgetOldPic = await prisma.user.findUnique({
+      where: {
+        id: req.user.id,
+      },
+      select: {
+        photo: true,
+      },
+    });
+    // if (!checkgetOldPic){
+    //   return res.status(400).json({msg: 'Error occurred'})
+    // }
+
+    if (checkgetOldPic?.photo) {
+      const key = checkgetOldPic.photo.split("/");
+      deleteOcean(key[key.length - 1])
+        .then((e) => {
+          console.log("completed with", e);
+        })
+        .catch((e) => {
+          console.log(new Error(e));
+        });
+    }
+    const userWithProfilePicture = await prisma.user.update({
+      where: {
+        id: req.user.id,
+      },
+      data: {
+        photo: req.file.location,
+      },
+    });
+    if (userWithProfilePicture) {
+      return res.status(200).json({ msg: "Success", url: req.file.filename });
+    }
+    return res.status(400).json({ msg: "Failed to update" });
+  } catch (error) {
+    res.status(400).json({ error, msg: "Error Occurred" });
+  }
 };
