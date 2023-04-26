@@ -21,3 +21,5 @@ export const getRider = async (req: any, res: Response) => {
     console.log(e);
   }
 };
+
+
