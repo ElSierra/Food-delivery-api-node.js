@@ -3,7 +3,7 @@ dotenv.config();
 import app from "./app";
 import io from "./io";
 
-const Port = process.env.PORT || 5500;
+const Port = process.env.PORT as string
 
 io;
 
