@@ -15,7 +15,7 @@ To start the Food-Delivery API, you will need to follow these steps:
 2. Install the dependencies using npm.
 
    ```bash
-   cd food-delivery-api
+   cd Quick-chop-api
    npm install
 
    ```
