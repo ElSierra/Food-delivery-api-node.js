@@ -1,28 +1,47 @@
 # 🍰 FOOD-DELIVERY-API
 
-## 👁️ Needed Environmental Variables
+## 🚀 Starting the Food-Delivery API
 
-| Key           | Description                                               |
-| ------------- | --------------------------------------------------------- |
-| DATABASE_URL  | The URL for the MongoDB database used by a food API       |
-| SECRET        | A secret key for the food API                             |
-| PORT          | The port number for the food API server                   |
-| WEBSITE_URL   | The URL for the website hosting the food API              |
-| EMAIL         | The email address used for authentication in the food API |
-| PASSWORD      | The password used for authentication in the food API      |
-| CLIENT_SECRET | The client secret for accessing a Google API              |
-| CLIENT_ID     | The client ID for accessing a Google API                  |
-| REFRESH_TOKEN | The refresh token used for accessing a Google API         |
+To start the Food-Delivery API, you will need to follow these steps:
 
-### TODO [AUTH]
+1. Clone the repository to your local machine.
 
-- Implement an endpoint to allow users to change their password.
-- Add an endpoint to enable users to upload their profile details.
-- Create an endpoint for users to set their location.
-- Implement an endpoint to allow delete account.
-  
-### End Points
+    ```bash
+    git clone https://github.com/ElSierra/Food-delivery-api-node.js.git
+    ```
 
-![Login](/Images/login.jpeg)
+2. Install the dependencies using npm.
 
-![Login](/Images/signup.jpeg)
+   ```bash
+   cd food-delivery-api
+   npm install
+
+   ```
+
+3. Set up the environmental variables in a .env file in the root directory of the project.
+
+    ```bash
+    DATABASE_URL=<your-mongodb-url>
+    SECRET=<your-secret-key>
+    PORT=<your-port-number>
+    WEBSITE_URL=<your-website-url>
+    EMAIL=<your-email>
+    PASSWORD=<your-password>
+    CLIENT_SECRET=<your-google-client-secret>
+    CLIENT_ID=<your-google-client-id>
+    REFRESH_TOKEN=<your-google-refresh-token>
+    REDIS_HOST=<your-redis-host>
+    REDIS_PASSWORD=<your-redis-password>
+    SPACES_ENDPOINT=<your-aws-spaces-endpoint>
+    SPACES_KEY=<your-aws-spaces-key>
+    SPACES_SECRET=<your-aws-spaces-secret>
+    SPACES_NAME=<your-aws-spaces-name>
+    
+    ```
+
+4. Start the server using npm or yarn.
+
+    ```bash
+    npm run start
+    
+    ```
