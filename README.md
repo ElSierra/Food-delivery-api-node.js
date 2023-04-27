@@ -7,7 +7,7 @@ To start the Food-Delivery API, you will need to follow these steps:
 1. Clone the repository to your local machine.
 
     ```bash
-    git clone https://github.com/ElSierra/Food-delivery-api-node.js.git
+    git clone https://github.com/ElSierra/Quick-chop-api.git
     ```
 
 2. Install the dependencies using npm.
