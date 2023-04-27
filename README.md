@@ -39,9 +39,10 @@ To start the Food-Delivery API, you will need to follow these steps:
     
     ```
 
-4. Start the server using npm or yarn.
+4. Start the server using npm
 
     ```bash
+    prisma generate
     npm run start
     
     ```
