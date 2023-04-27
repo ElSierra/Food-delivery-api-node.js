@@ -1,10 +1,13 @@
 import nodemailer from "nodemailer";
 import { template } from "./emailTemplate";
-import { transporter } from "../constant/transporterInit";
+import { transporter } from "../../../../lib/transporter/transporterInit";
 
-export const sendEmail = (link: string, website: string, email: string, name : string) => {
-
-
+export const sendEmail = (
+  link: string,
+  website: string,
+  email: string,
+  name: string
+) => {
   var mailOptions = {
     from: process.env.EMAIL,
     to: email,
@@ -13,11 +16,9 @@ export const sendEmail = (link: string, website: string, email: string, name : s
   };
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
-    console.log("📧", error)
-    
+      console.log("📧", error);
     } else {
       console.log("📧 Email sent: " + info.response);
     }
   });
-  
 };

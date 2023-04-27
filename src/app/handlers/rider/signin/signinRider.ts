@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import prisma from "../../../../prisma/init";
+import prisma from "../../../../../lib/prisma/init";
 import { compareHashedPassword, createJWT } from "../../../modules/auth/auth";
 import { createAddOTP } from "../../../modules/auth/handleOTP";
 import { generateOTP } from "../../../modules/auth/generateOTP";

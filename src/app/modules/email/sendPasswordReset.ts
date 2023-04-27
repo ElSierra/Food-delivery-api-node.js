@@ -1,10 +1,13 @@
-
-import { transporter } from "../constant/transporterInit";
+import { transporter } from "../../../../lib/transporter/transporterInit";
 import { template } from "./emailTemplate";
 import { resetTemplate } from "./resetTemplate";
 
-export const sendPasswordReset = (link: string, website: string, email: string, name : string) => {
-  
+export const sendPasswordReset = (
+  link: string,
+  website: string,
+  email: string,
+  name: string
+) => {
   var mailOptions = {
     from: process.env.EMAIL,
     to: email,
@@ -13,11 +16,9 @@ export const sendPasswordReset = (link: string, website: string, email: string, 
   };
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
-    console.log("📧", error)
-    
+      console.log("📧", error);
     } else {
       console.log("📧 Email sent: " + info.response);
     }
   });
-  
 };

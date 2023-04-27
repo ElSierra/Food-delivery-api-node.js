@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import prisma from "../../../../prisma/init";
+import prisma from "../../../../../lib/prisma/init";
 import { AuthenticatedRequest } from "../../../../../interface";
 
 const updateLocation = async (req: AuthenticatedRequest, res: Response) => {

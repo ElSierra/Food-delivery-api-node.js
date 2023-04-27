@@ -1,5 +1,5 @@
 import { Response } from "express";
-import prisma from "../../../../prisma/init";
+import prisma from "../../../../../lib/prisma/init";
 import { riderResponse } from "../../../../../interface";
 
 export const getRider = async (req: any, res: Response) => {
@@ -21,5 +21,3 @@ export const getRider = async (req: any, res: Response) => {
     console.log(e);
   }
 };
-
-

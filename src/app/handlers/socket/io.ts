@@ -1,9 +1,12 @@
 import { Server } from "socket.io";
-import { ClientToServerEvents, ServerToClientEvents } from "../interface";
-import { collection } from "./app/modules/auth/verifyStreams";
+import {
+  ClientToServerEvents,
+  ServerToClientEvents,
+} from "../../../../interface";
+import { collection } from "../../modules/auth/verifyStreams";
 import { ObjectId } from "mongodb";
 
-import server from "./app";
+import server from "../../router";
 
 const io = require("socket.io")(server);
 

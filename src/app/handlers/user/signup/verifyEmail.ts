@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import prisma from "../../../../prisma/init";
+import prisma from "../../../../../lib/prisma/init";
 import { confirmationTemplate } from "./confirmationTemplate";
 
 export const verifyEmail = async (req: Request, res: Response) => {

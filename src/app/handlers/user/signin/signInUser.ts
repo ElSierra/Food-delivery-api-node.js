@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import prisma from "../../../../prisma/init";
+import prisma from "../../../../../lib/prisma/init";
 import { compareHashedPassword, createJWT } from "../../../modules/auth/auth";
 import { createAddOTP } from "../../../modules/auth/handleOTP";
 import { generateOTP } from "../../../modules/auth/generateOTP";
-
 
 export const signInUser = async (
   req: Request,
@@ -20,15 +19,14 @@ export const signInUser = async (
       },
     });
 
-
     if (user) {
       if (await compareHashedPassword(password, user.password)) {
-
-
         createAddOTP(user.email, generateOTP());
-        res.status(200).json({ msg: "Check your email, expires in 10 minutes" });
+        res
+          .status(200)
+          .json({ msg: "Check your email, expires in 10 minutes" });
       } else {
-        console.log('incorrect')
+        console.log("incorrect");
         res.status(401).json({ error: "Invalid email or password" });
       }
     } else {
@@ -36,6 +34,6 @@ export const signInUser = async (
     }
   } catch (e) {
     res.status(400).json({ e });
-    console.log(e)
+    console.log(e);
   }
 };

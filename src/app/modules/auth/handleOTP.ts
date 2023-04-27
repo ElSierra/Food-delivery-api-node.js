@@ -1,4 +1,4 @@
-import prisma from "../../../prisma/init";
+import prisma from "../../../../lib/prisma/init";
 import { sendOTP } from "../email/sendOTP";
 
 export const createAddOTP = async (email: string, OTP: number) => {

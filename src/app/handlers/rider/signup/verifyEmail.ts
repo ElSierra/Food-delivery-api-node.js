@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import prisma from "../../../../prisma/init";
+import prisma from "../../../../../lib/prisma/init";
 import { confirmationTemplate } from "./confirmationTemplate";
 
 export const verifyEmailRider = async (req: Request, res: Response) => {
@@ -10,7 +10,9 @@ export const verifyEmailRider = async (req: Request, res: Response) => {
   if (token) {
     if (process.env.SECRET) {
       try {
-        const rider = jwt.verify(token, process.env.SECRET) as { email: string };
+        const rider = jwt.verify(token, process.env.SECRET) as {
+          email: string;
+        };
         if (rider) {
           try {
             const newRider = await prisma.rider.findFirst({

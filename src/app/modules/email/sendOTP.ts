@@ -1,6 +1,5 @@
-
 import { otpTemplate } from "./otpTemplate";
-import { transporter } from "../constant/transporterInit";
+import { transporter } from "../../../../lib/transporter/transporterInit";
 
 export const sendOTP = (
   otp: number,
@@ -8,7 +7,6 @@ export const sendOTP = (
   email: string,
   name: string
 ) => {
-
   var mailOptions = {
     from: process.env.EMAIL,
     to: email,

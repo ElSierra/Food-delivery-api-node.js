@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import prisma from "../../../../prisma/init";
+import prisma from "../../../../../lib/prisma/init";
 import {
   createEmailJWT,
   createHashedPassword,
@@ -19,11 +19,9 @@ export const createNewRider = async (req: Request, res: Response) => {
       },
     });
     if (user) {
-      return res
-        .status(400)
-        .json({
-          msg: "a user cannot be a rider too, delete your user account",
-        });
+      return res.status(400).json({
+        msg: "a user cannot be a rider too, delete your user account",
+      });
     }
     const rider = await prisma.rider.create({
       data: {

@@ -1,5 +1,5 @@
 import { Response } from "express";
-import prisma from "../../../../prisma/init";
+import prisma from "../../../../../lib/prisma/init";
 import { userResponse } from "../../../../../interface";
 
 export const makePayment = async (req: any, res: Response) => {

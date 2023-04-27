@@ -1,9 +1,9 @@
 import * as dotenv from "dotenv";
 dotenv.config();
-import app from "./app";
-import io from "./io";
+import app from "./app/router";
+import io from "./app/handlers/socket/io";
 
-const Port = process.env.PORT as string
+const Port = process.env.PORT as string;
 
 io;
 

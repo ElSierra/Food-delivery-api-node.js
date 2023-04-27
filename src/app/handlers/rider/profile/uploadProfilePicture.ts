@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { upload } from "../../../modules/mutler/mutler";
-import prisma from "../../../../prisma/init";
+import { upload } from "../../../../../lib/mutler/mutler";
+import prisma from "../../../../../lib/prisma/init";
 import fs from "fs";
 export const updateProfilePic = async (req: any, res: Response) => {
   const url = req.protocol + "://" + req.get("host");

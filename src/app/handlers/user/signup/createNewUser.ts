@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import prisma from "../../../../prisma/init";
+import prisma from "../../../../../lib/prisma/init";
 import {
   createEmailJWT,
   createHashedPassword,
@@ -20,7 +20,7 @@ export const createNewUser = async (req: Request, res: Response) => {
         email,
         password: await createHashedPassword(password),
         phone,
-        balance: 0
+        balance: 0,
       },
 
       select: {
@@ -47,7 +47,7 @@ export const createNewUser = async (req: Request, res: Response) => {
       res.status(200).json(userData);
     }
   } catch (e: any) {
-    console.log(e)
+    console.log(e);
 
     return res.status(400).json(e.meta);
   }

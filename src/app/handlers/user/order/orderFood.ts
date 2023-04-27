@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import prisma from "../../../../prisma/init";
+import prisma from "../../../../../lib/prisma/init";
 
 export const orderFood = async (req: any, res: Response) => {
   console.log("here");

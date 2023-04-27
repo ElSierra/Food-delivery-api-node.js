@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import client from "../../../redis/init";
+import client from "../../../../lib/redis/init";
 
 export const logout = (req: any, res: Response) => {
   const token = req.token;

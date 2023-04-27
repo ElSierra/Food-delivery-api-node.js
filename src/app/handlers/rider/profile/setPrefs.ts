@@ -1,6 +1,5 @@
-
 import { Response } from "express";
-import prisma from "../../../../prisma/init";
+import prisma from "../../../../../lib/prisma/init";
 
 export const setPrefsRider = async (req: any, res: Response) => {
   const { emailUpdates, mode } = req.query;
