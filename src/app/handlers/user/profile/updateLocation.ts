@@ -56,7 +56,7 @@ const updateLocation = async (req: AuthenticatedRequest, res: Response) => {
 
     return res.status(200).json(userUpdateLocation);
   } catch (e: any) {
-    return res.status(200).json(new Error(e).message);
+    return res.status(400).json({ msg: "Failed to update", e });
   }
 };
 export const updateLocationHandler = (req: Request, res: Response) => {
