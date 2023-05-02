@@ -54,9 +54,9 @@ const updateLocation = async (req: AuthenticatedRequest, res: Response) => {
       },
     });
 
-    res.status(200).json(userUpdateLocation);
+    return res.status(200).json(userUpdateLocation);
   } catch (e: any) {
-    res.status(200).json(new Error(e).message);
+    return res.status(200).json(new Error(e).message);
   }
 };
 export const updateLocationHandler = (req: Request, res: Response) => {

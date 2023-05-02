@@ -14,11 +14,11 @@ export const retryOtp = async (req: Request, res: Response) => {
 
     if (user) {
       await createAddOTP(email, generateOTP());
-      res.status(200).json({ msg: "sent", date: res.sendDate });
+     return res.status(200).json({ msg: "sent", date: res.sendDate });
     } else {
-      res.status(400).json({ msg: "error" });
+    return  res.status(400).json({ msg: "error" });
     }
   } catch (e) {
-    res.status(400).json({ msg: "error" });
+    return res.status(400).json({ msg: "error" });
   }
 };
