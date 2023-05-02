@@ -8,12 +8,11 @@ import {
   locationUpdateValidation,
   orderFoodValidation,
   makePaymentValidation,
-} from "../handlers/auth/module/inputValidation";
+} from "../middleware/inputValidation";
 import { passwordChangeHandler } from "../handlers/user/signin/passwordChange";
-import { handleErrors } from "../modules/auth/handleErrors";
+import { handleErrors } from "../middleware/handleErrors";
 import { updateLocationHandler } from "../handlers/user/profile/updateLocation";
-import { checkVerified } from "../modules/auth/auth";
-
+import { checkVerified } from "../middleware/auth";
 
 import {
   updateProfilePicOcean,
@@ -27,7 +26,6 @@ const userRouter = Router();
 userRouter.get("/home", checkVerified, (req: Request, res: Response) => {
   res.status(200).json({ message: "Okay" });
 });
-
 
 userRouter.get("/auth/user", getUser);
 userRouter.get("/auth/logout", logout);
@@ -53,7 +51,5 @@ userRouter.put(
 );
 
 userRouter.put("/upload-avatar", uploadPhotoOcean, updateProfilePicOcean);
-
-
 
 export default userRouter;

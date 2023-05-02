@@ -3,7 +3,7 @@ import {
   ClientToServerEvents,
   ServerToClientEvents,
 } from "../../../../interface";
-import { collection } from "../../modules/auth/verifyStreams";
+import { collection } from "../../../../lib/mongodb/init";
 import { ObjectId } from "mongodb";
 
 import server from "../../router";

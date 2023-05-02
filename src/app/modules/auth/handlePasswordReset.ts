@@ -1,5 +1,5 @@
 import prisma from "../../../../lib/prisma/init";
-import { createHashedPassword } from "./auth";
+import { createHashedPassword } from "../../middleware/auth";
 
 export const AddPasswordToDB = async (email: string, password: string) => {
   try {

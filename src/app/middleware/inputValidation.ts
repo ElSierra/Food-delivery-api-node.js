@@ -93,3 +93,6 @@ export const makePaymentValidation = [
   body("orderId").exists().isMongoId().withMessage("Not Valid MenuId"),
   body("amount").exists().isFloat({ min: 10 }).withMessage("Not valid amount"),
 ]
+export const retryOTPValidation = [
+  query("email").exists().isEmail().withMessage("Not Valid Email"),
+]

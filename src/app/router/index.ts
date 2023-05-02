@@ -9,22 +9,23 @@ import {
   loginValidation,
   otpValidation,
   resetPasswordValidation,
+  retryOTPValidation,
   signupValidation,
-} from "../handlers/auth/module/inputValidation";
+} from "../middleware/inputValidation";
 import { signInUser } from "../handlers/user/signin/signInUser";
 
 import { dropDatabase } from "../modules/misc/dropMongo";
 
 import { verifyOTP } from "../handlers/user/signin/verifyOTP";
-import { blockJWT, protect } from "../modules/auth/auth";
-import { apiLimiter } from "../modules/misc/apiLimiter";
+import { blockJWT, protect } from "../middleware/auth";
+import { apiLimiter, loginRateLimiter, requestVerificationLimit } from "../middleware/apiLimiter";
 import { passwordReset } from "../handlers/user/signin/passwordReset";
 import { generateNewPassword } from "../handlers/user/signin/generateNewPassword";
 
 import client from "../../../lib/redis/init";
 import { verifyEmail } from "../handlers/user/signup/verifyEmail";
 import { createNewUser } from "../handlers/user/signup/createNewUser";
-import { handleErrors } from "../modules/auth/handleErrors";
+import { handleErrors } from "../middleware/handleErrors";
 import { populateRestauarnt } from "../handlers/restaurant/populateRestaurant";
 import path from "path";
 import fs from "fs";
@@ -39,6 +40,7 @@ import http from "http";
 import riderRouter from "./rider";
 import { getRestaurantsByName } from "../handlers/restaurant/getRestaurantsByName";
 import { getRestaurantsAll } from "../handlers/restaurant/getAllRestaurants";
+import { retryOtp } from "../handlers/user/signin/retryOtp";
 
 const app = express();
 const server = http.createServer(app);
@@ -66,16 +68,16 @@ app.get("/", async (req, res) => {
   res.status(200).json({ success: "👍 Okay" });
 });
 
-app.get("/:ip", async (req, res) => {
-  console.log({ ip: req.params.ip });
-  res.status(200).json({ ip: req.params.ip });
-});
+// app.get("/:ip", async (req, res) => {
+//   console.log({ ip: req.params.ip });
+//   res.status(200).json({ ip: req.params.ip });
+// });
 
 app.use(apiLimiter);
 
 //? User EndPoints
 app.post("/api/auth/signup", signupValidation, handleErrors, createNewUser);
-app.post("/api/auth/login", loginValidation, handleErrors, signInUser);
+app.post("/api/auth/login", loginRateLimiter, loginValidation, handleErrors, signInUser);
 app.get("/verify/:token", emailJWTValidation, handleErrors, verifyEmail);
 app.get("/reset/:token", emailJWTValidation, handleErrors, generateNewPassword);
 app.put("/api/auth/otp", otpValidation, handleErrors, verifyOTP);
@@ -85,6 +87,7 @@ app.put(
   handleErrors,
   passwordReset
 );
+app.get("/api/auth/retry-otp", requestVerificationLimit,retryOTPValidation,handleErrors,retryOtp)
 
 //? Rider EndPoints
 app.post(
@@ -117,7 +120,7 @@ app.put(
 //? Restaurant EndPoints
 app.get("/drop", dropDatabase);
 app.get("/populate", populateRestauarnt);
-app.get("/all-restaurants", (req, res) => {
+app.get("/restaurants", (req, res) => {
   if (req.query.name) {
     return getRestaurantsByName(req, res);
   } else {

@@ -22,6 +22,7 @@ export const createAddOTP = async (email: string, OTP: number) => {
       });
     }, 600000);
     sendOTP(user.OTP, "Food APP", user.email, user.name);
+
   } catch (e: any) {
     console.log(e);
   }

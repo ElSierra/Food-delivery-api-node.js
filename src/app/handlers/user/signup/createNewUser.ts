@@ -4,7 +4,7 @@ import {
   createEmailJWT,
   createHashedPassword,
   createJWT,
-} from "../../../modules/auth/auth";
+} from "../../../middleware/auth";
 import { sendEmail } from "../../../modules/email/sendEmail";
 
 const DEFAULT_EXPIRATION = 3600;

@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { NextFunction, Request, Response } from "express";
-import client from "../../../../lib/redis/init";
+import client from "../../../lib/redis/init";
 
 export const createHashedPassword = (password: string) => {
   return bcrypt.hash(password, 5);

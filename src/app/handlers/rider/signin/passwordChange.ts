@@ -3,7 +3,7 @@ import prisma from "../../../../../lib/prisma/init";
 import {
   compareHashedPassword,
   createHashedPassword,
-} from "../../../modules/auth/auth";
+} from "../../../middleware/auth";
 import { AuthenticatedRequest } from "../../../../../interface";
 
 const passwordChange = async (req: any, res: Response) => {
