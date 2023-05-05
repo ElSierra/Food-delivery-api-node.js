@@ -68,7 +68,7 @@ export const blockJWT = async (
   next: NextFunction
 ) => {
   const bearer = req.headers.authorization;
-
+console.log(bearer)
   if (!bearer) {
     return res.status(401).json({ msg: "Unauthorized" });
   }

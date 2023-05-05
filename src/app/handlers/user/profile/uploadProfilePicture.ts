@@ -109,7 +109,7 @@ export const uploadPhotoOcean = (
       }
     } else {
       const errorMessage = new Error(error);
-
+      console.log(error, "uploadHandler");
       if (errorMessage.message) {
         const [, msg] = errorMessage.message.split(":");
         return res.status(400).json({ msg });

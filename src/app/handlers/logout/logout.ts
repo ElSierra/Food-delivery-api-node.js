@@ -9,6 +9,8 @@ export const logout = (req: any, res: Response) => {
       return res.status(200).json({ msg: "secure logout" });
     })
     .catch((e) => {
+     
       return res.status(401).json({ msg: "unsecure logout", e });
+     
     });
 };
