@@ -54,6 +54,7 @@ export const protect = (req: any, res: Response, next: NextFunction) => {
   try {
     const user = jwt.verify(token, process.env.SECRET || "");
     req.user = user;
+    req.cookies = user
     req.token = token;
     next();
   } catch (e) {

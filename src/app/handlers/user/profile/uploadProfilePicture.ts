@@ -82,6 +82,7 @@ export const uploadPhoto = (req: any, res: Response, next: NextFunction) => {
 
       if (errorMessage.message) {
         const [, msg] = errorMessage.message.split(":");
+       
         return res.status(400).json({ msg });
       }
     }

@@ -34,6 +34,7 @@ export const verifyOTP = async (
           select: userResponse,
         });
         const token = { token: createJWT(user) };
+        
         return res.status(200).json({ ...validatedUser, ...token });
       } else if (user.OTP === 1) {
         return res.status(401).json({ msg: "OTP Expired" });

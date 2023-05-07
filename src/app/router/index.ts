@@ -9,6 +9,7 @@ import {
   loginValidation,
   otpValidation,
   resetPasswordValidation,
+  restaurantGetValidation,
   retryOTPValidation,
   signupValidation,
 } from "../middleware/inputValidation";
@@ -18,7 +19,11 @@ import { dropDatabase } from "../modules/misc/dropMongo";
 
 import { verifyOTP } from "../handlers/user/signin/verifyOTP";
 import { blockJWT, protect } from "../middleware/auth";
-import { apiLimiter, loginRateLimiter, requestVerificationLimit } from "../middleware/apiLimiter";
+import {
+  apiLimiter,
+  loginRateLimiter,
+  requestVerificationLimit,
+} from "../middleware/apiLimiter";
 import { passwordReset } from "../handlers/user/signin/passwordReset";
 import { generateNewPassword } from "../handlers/user/signin/generateNewPassword";
 
@@ -26,7 +31,7 @@ import client from "../../../lib/redis/init";
 import { verifyEmail } from "../handlers/user/signup/verifyEmail";
 import { createNewUser } from "../handlers/user/signup/createNewUser";
 import { handleErrors } from "../middleware/handleErrors";
-import { populateRestauarnt } from "../handlers/restaurant/populateRestaurant";
+import { populateRestaurant } from "../handlers/restaurant/populateRestaurant";
 import path from "path";
 import fs from "fs";
 import { testStream } from "../handlers/testStreaming/testStream";
@@ -41,12 +46,17 @@ import riderRouter from "./rider";
 import { getRestaurantsByName } from "../handlers/restaurant/getRestaurantsByName";
 import { getRestaurantsAll } from "../handlers/restaurant/getAllRestaurants";
 import { retryOtp } from "../handlers/user/signin/retryOtp";
+import cookieParser from "cookie-parser";
+import { getSkipRestaurantsByName } from "../handlers/restaurant/getSkipRestaurantsByName";
+import { getRestaurantsSkip } from "../handlers/restaurant/getSkipRestauarant";
 
 const app = express();
-const server = http.createServer(app);
 
-const rootDir = path.resolve(__dirname, "../..");
+const server = http.createServer(app);
+app.use(cookieParser());
+
 app.use(cors());
+
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
@@ -77,7 +87,13 @@ app.use(apiLimiter);
 
 //? User EndPoints
 app.post("/api/auth/signup", signupValidation, handleErrors, createNewUser);
-app.post("/api/auth/login", loginRateLimiter, loginValidation, handleErrors, signInUser);
+app.post(
+  "/api/auth/login",
+  loginRateLimiter,
+  loginValidation,
+  handleErrors,
+  signInUser
+);
 app.get("/verify/:token", emailJWTValidation, handleErrors, verifyEmail);
 app.get("/reset/:token", emailJWTValidation, handleErrors, generateNewPassword);
 app.put("/api/auth/otp", otpValidation, handleErrors, verifyOTP);
@@ -87,7 +103,13 @@ app.put(
   handleErrors,
   passwordReset
 );
-app.get("/api/auth/retry-otp", requestVerificationLimit,retryOTPValidation,handleErrors,retryOtp)
+app.get(
+  "/api/auth/retry-otp",
+  requestVerificationLimit,
+  retryOTPValidation,
+  handleErrors,
+  retryOtp
+);
 
 //? Rider EndPoints
 app.post(
@@ -119,12 +141,20 @@ app.put(
 
 //? Restaurant EndPoints
 app.get("/drop", dropDatabase);
-app.get("/populate", populateRestauarnt);
-app.get("/restaurants", (req, res) => {
+app.get("/populate", populateRestaurant);
+app.get("/api/restaurants", restaurantGetValidation,handleErrors, (req: Request, res: Response) => {
   if (req.query.name) {
-    return getRestaurantsByName(req, res);
+    if (req.query.start && req.query.take) {
+      return getSkipRestaurantsByName(req, res);
+    } else {
+      return getRestaurantsByName(req, res);
+    }
   } else {
-    return getRestaurantsAll(req, res);
+    if (req.query.start && req.query.take) {
+      return getRestaurantsSkip(req, res);
+    } else {
+      return getRestaurantsAll(req, res);
+    }
   }
 });
 

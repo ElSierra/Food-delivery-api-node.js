@@ -3,7 +3,9 @@ import prisma from "../../../../../lib/prisma/init";
 import { userResponse } from "../../../../../interface";
 
 export const getUser = async (req: any, res: Response) => {
-  console.log(req.user);
+ 
+ 
+
   try {
     const user = await prisma.user.findFirst({
       where: {
