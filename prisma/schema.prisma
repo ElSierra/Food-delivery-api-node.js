@@ -25,7 +25,7 @@ model User {
   updatedAt     DateTime     @updatedAt
   locationId    String?      @db.ObjectId
   paymentId     String?      @db.ObjectId
-  preferences    Preferences? @relation(fields: [preferencesId], references: [id])
+  preferences   Preferences? @relation(fields: [preferencesId], references: [id])
   preferencesId String?      @db.ObjectId
 }
 
@@ -46,25 +46,31 @@ model Rider {
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   locationId    String?      @db.ObjectId
-  preferencesId String?      @db.ObjectId 
+  preferencesId String?      @db.ObjectId
 }
 
 model Restaurant {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  name       String
-  location   Location? @relation(fields: [locationId], references: [id])
-  photo      String
-  menu       Menu[]
-  orders     Orders[]
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  locationId String?   @db.ObjectId
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  loadingImage String
+  available    Boolean   @default(true)
+  slug         String
+  category     String[]
+  location     Location? @relation(fields: [locationId], references: [id])
+  photo        String
+  menu         Menu[]
+  orders       Orders[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  locationId   String?   @db.ObjectId
 }
 
 model Menu {
   id           String      @id @default(auto()) @map("_id") @db.ObjectId
   name         String
   price        Float
+  available    Boolean     @default(true)
+  loadingImage String?
   photo        String?
   restaurant   Restaurant  @relation(fields: [restaurantId], references: [id])
   restaurantId String      @db.ObjectId

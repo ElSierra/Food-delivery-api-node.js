@@ -19,6 +19,9 @@ export const getUser = async (req: any, res: Response) => {
         user,
       });
     }
+    res.status(400).json({
+      msg: 'Your account is Probably banned or deleted'
+    })
   } catch (e) {
     console.log(e);
   }
