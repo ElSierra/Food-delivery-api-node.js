@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import prisma from "../../../../lib/prisma/init";
+import prisma from "../../../../../lib/prisma/init";
 import { getPlaiceholder } from "plaiceholder";
 import slugify from "slugify";
 

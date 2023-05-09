@@ -31,7 +31,7 @@ import client from "../../../lib/redis/init";
 import { verifyEmail } from "../handlers/user/signup/verifyEmail";
 import { createNewUser } from "../handlers/user/signup/createNewUser";
 import { handleErrors } from "../middleware/handleErrors";
-import { populateRestaurant } from "../handlers/restaurant/populateRestaurant";
+
 import path from "path";
 import fs from "fs";
 import { testStream } from "../handlers/testStreaming/testStream";
@@ -43,18 +43,22 @@ import { generateNewPasswordRider } from "../handlers/rider/signin/generateNewPa
 import { passwordResetRider } from "../handlers/rider/signin/passwordReset";
 import http from "http";
 import riderRouter from "./rider";
-import { getRestaurantsByName } from "../handlers/restaurant/getRestaurantsByName";
-import { getRestaurantsAll } from "../handlers/restaurant/getAllRestaurants";
+
+import { getRestaurantsAll } from "../handlers/restaurant/getRestaurant/getAllRestaurants";
 import { retryOtp } from "../handlers/user/signin/retryOtp";
 import cookieParser from "cookie-parser";
-import { getSkipRestaurantsByName } from "../handlers/restaurant/getSkipRestaurantsByName";
-import { getRestaurantsSkip } from "../handlers/restaurant/getSkipRestauarant";
+import { populateRestaurant } from "../handlers/restaurant/getRestaurant/populateRestaurant";
+import { getSkipRestaurantsByName } from "../handlers/restaurant/getRestaurant/getSkipRestaurantsByName";
+import { getRestaurantsByName } from "../handlers/restaurant/getRestaurant/getRestaurantsByName";
+import { getRestaurantsSkip } from "../handlers/restaurant/getRestaurant/getSkipRestauarant";
+import { uploadPhotoOcean } from "../handlers/user/profile/uploadProfilePicture";
+import { createRestaurant } from "../handlers/restaurant/createRestaurant/createRestaurant";
 
 const app = express();
 
 const server = http.createServer(app);
 app.use(cookieParser());
-
+app.set('trust proxy', true)
 app.use(cors());
 
 app.use(morgan("dev"));
@@ -75,6 +79,7 @@ app.use(express.urlencoded({ extended: true }));
 })();
 
 app.get("/", async (req, res) => {
+ console.log( req.ip )
   res.status(200).json({ success: "👍 Okay" });
 });
 
@@ -140,23 +145,29 @@ app.put(
 );
 
 //? Restaurant EndPoints
+
 app.get("/drop", dropDatabase);
 app.get("/populate", populateRestaurant);
-app.get("/api/restaurants", restaurantGetValidation,handleErrors, (req: Request, res: Response) => {
-  if (req.query.name) {
-    if (req.query.start && req.query.take) {
-      return getSkipRestaurantsByName(req, res);
+app.get(
+  "/api/restaurants",
+  restaurantGetValidation,
+  handleErrors,
+  (req: Request, res: Response) => {
+    if (req.query.name) {
+      if (req.query.start && req.query.take) {
+        return getSkipRestaurantsByName(req, res);
+      } else {
+        return getRestaurantsByName(req, res);
+      }
     } else {
-      return getRestaurantsByName(req, res);
-    }
-  } else {
-    if (req.query.start && req.query.take) {
-      return getRestaurantsSkip(req, res);
-    } else {
-      return getRestaurantsAll(req, res);
+      if (req.query.start && req.query.take) {
+        return getRestaurantsSkip(req, res);
+      } else {
+        return getRestaurantsAll(req, res);
+      }
     }
   }
-});
+);
 
 //? Misc EndPoints
 // app.get("/pic/:id", (req, res) => {

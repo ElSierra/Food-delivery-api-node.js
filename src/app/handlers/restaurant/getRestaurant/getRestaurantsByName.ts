@@ -1,16 +1,14 @@
 import { Request, Response } from "express";
-import prisma from "../../../../lib/prisma/init";
+import prisma from "../../../../../lib/prisma/init";
 
-export const getSkipRestaurantsByName = async (req: Request, res: Response) => {
-  const { name, start, take } = req.query;
+export const getRestaurantsByName = async (req: Request, res: Response) => {
+  const { name } = req.query;
   try {
     const restaurants = await prisma.restaurant.findMany({
       include: {
         location: true,
         menu: true,
       },
-      skip: Number(start),
-      take: Number(take),
 
       where: {
         name: {

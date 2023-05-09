@@ -31,6 +31,33 @@ export const userResponse = {
   },
 };
 
+export const restaurantAdminResponse = {
+  id: true,
+  email: true,
+  name: true,
+  verified: true,
+  phone: true,
+  location: true,
+  photo: true,
+  OTP: true,
+  payment: true,
+  preferences: true,
+  balance: true,
+  restaurant : true,
+  orders: {
+    include: {
+      rider: {
+        select: {
+          location: true,
+          phone: true,
+          email: true,
+        },
+      },
+    },
+  },
+};
+
+
 export const riderResponse = {
   id: true,
   email: true,

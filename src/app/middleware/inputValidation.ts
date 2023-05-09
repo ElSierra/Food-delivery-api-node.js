@@ -102,3 +102,10 @@ export const restaurantGetValidation = [
   query("name").optional().isString().withMessage("Not valid string"),
   query("take").optional().isNumeric().withMessage("Not valid number"),
 ];
+
+export const CreateUpdateValidation = [
+  body("location").exists().isLatLong().withMessage("Invalid location format."),
+  body("category").exists().isArray().withMessage("Not Array."),
+  body("address").exists().withMessage("Invalid address format."),
+  body("address").exists().isString().withMessage("Invalid address format."),
+];
