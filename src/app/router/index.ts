@@ -61,6 +61,7 @@ const app = express();
 const upload = multer()
 
 const server = http.createServer(app);
+app.use(userAgent.express())
 app.use(cookieParser());
 app.set('trust proxy', true)
 app.use(cors());

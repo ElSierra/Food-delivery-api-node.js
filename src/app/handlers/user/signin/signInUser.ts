@@ -22,7 +22,7 @@ export const signInUser = async (
     if (user) {
       if (await compareHashedPassword(password, user.password)) {
         createAddOTP(user.email, generateOTP());
-
+      console.log(req.useragent)
         await prisma.loginInfo.create({
           data: {
             ipAddress: req.ip,
