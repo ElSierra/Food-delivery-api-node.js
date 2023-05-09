@@ -9,11 +9,11 @@ import { sendEmail } from "../../../modules/email/sendEmail";
 
 const DEFAULT_EXPIRATION = 3600;
 
-export const createNewUser = async (req: Request, res: Response) => {
+export const createNewUserRest = async (req: Request, res: Response) => {
   const { name, email, password, phone } = req.body;
 
   try {
-    const user = await prisma.user.create({
+    const user = await prisma.restaurantAdmin.create({
       data: {
         name,
         verified: false,

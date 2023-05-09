@@ -4,7 +4,7 @@ import { compareHashedPassword, createJWT } from "../../../middleware/auth";
 import { createAddOTP } from "../../../modules/auth/handleOTP";
 import { generateOTP } from "../../../modules/auth/generateOTP";
 
-export const signInUser = async (
+export const signInRestAdmin = async (
   req: Request,
   res: Response,
   next: NextFunction

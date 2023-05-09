@@ -3,9 +3,6 @@ import prisma from "../../../../../lib/prisma/init";
 import { userResponse } from "../../../../../interface";
 
 export const getUser = async (req: any, res: Response) => {
- 
- 
-
   try {
     const user = await prisma.user.findFirst({
       where: {
@@ -15,13 +12,13 @@ export const getUser = async (req: any, res: Response) => {
     });
 
     if (user) {
-      res.status(200).json({
+      return res.status(200).json({
         user,
       });
     }
-    res.status(400).json({
-      msg: 'Your account is Probably banned or deleted'
-    })
+    return res.status(400).json({
+      msg: "Your account is Probably banned or deleted",
+    });
   } catch (e) {
     console.log(e);
   }

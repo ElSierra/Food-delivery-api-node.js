@@ -7,6 +7,7 @@ export const createRestaurant = async (req: any, res: Response) => {
   const { email, id } = req.user;
   const { name, location, address, category } = req.body;
   const [latitude, longitude] = location.split(",");
+  console.log("reached here");
 
   try {
     const loadImage = (await getPlaiceholder(req.file.location)).base64;
@@ -16,7 +17,11 @@ export const createRestaurant = async (req: any, res: Response) => {
         photo: req.file.location,
         slug: slugify(name),
         loadingImage: loadImage,
-        category: category,
+        category: {
+          create: {
+            type: category,
+          },
+        },
         location: {
           create: {
             latitude: latitude,
@@ -37,6 +42,7 @@ export const createRestaurant = async (req: any, res: Response) => {
       return res.status(400).json({ error: "restaurant error" });
     }
   } catch (e: any) {
-    return res.status(400).json({ msg: new Error(e) });
+    console.log(e);
+    return res.status(400).json({ error: e });
   }
 };

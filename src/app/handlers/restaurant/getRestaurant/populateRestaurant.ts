@@ -137,8 +137,7 @@ const restaurantsName = [
   "El Celler de Can Roca",
   "Mirazur",
 ];
-
-export const populateRestaurant = async (req: Request, res: Response) => {
+export const populateRestaurant = async () => {
   await prisma.location.createMany({
     data: [
       //10 random latitudes and longitudes
@@ -466,6 +465,10 @@ export const populateRestaurant = async (req: Request, res: Response) => {
     ],
   });
 
+  const typesofRestaurant = [
+    'african','portuguese','mexican','african','portuguese','mexican','african','portuguese','mexican','african','portuguese','mexican','african','portuguese','mexican','african','portuguese','mexican','african','portuguese','mexican','african','portuguese','mexican',
+  ]
+
   const location = await prisma.location.findMany();
   const sakaLocationId = location[0].id;
   const martosLocationId = location[1].id;
@@ -474,14 +477,15 @@ export const populateRestaurant = async (req: Request, res: Response) => {
   // create an array of restaurant objects with the desired properties
   const restaurants = [];
   for (let i = 0; i < 10; i++) {
-    const loadImage = (await getPlaiceholder(restaurantsImage[39+i])).base64;
+    const loadImage = (await getPlaiceholder(restaurantsImage[20+i])).base64;
     if (loadImage) {
       const restaurant = {
-        name: restaurantsName[39+i],
+        name: restaurantsName[30+i],
         loadingImage: loadImage,
-        slug: slugify(restaurantsName[39+i]),
-        photo: restaurantsImage[39+i],
-        locationId: location[39+i].id,
+        slug: slugify(restaurantsName[30+i]),
+        photo: restaurantsImage[30+i],
+        locationId: location[30+i].id,
+        restaurantAdminId: '645a726c4e143619e975bd91'
       };
       restaurants.push(restaurant);
     }
@@ -517,6 +521,8 @@ export const populateRestaurant = async (req: Request, res: Response) => {
   await prisma.menu.createMany({
     data: menus,
   });
-
-  res.status(200).json({ message: "done" });
+console.log('done')
 };
+
+
+populateRestaurant()

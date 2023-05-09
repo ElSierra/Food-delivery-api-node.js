@@ -51,19 +51,24 @@ import { populateRestaurant } from "../handlers/restaurant/getRestaurant/populat
 import { getSkipRestaurantsByName } from "../handlers/restaurant/getRestaurant/getSkipRestaurantsByName";
 import { getRestaurantsByName } from "../handlers/restaurant/getRestaurant/getRestaurantsByName";
 import { getRestaurantsSkip } from "../handlers/restaurant/getRestaurant/getSkipRestauarant";
-import { uploadPhotoOcean } from "../handlers/user/profile/uploadProfilePicture";
-import { createRestaurant } from "../handlers/restaurant/createRestaurant/createRestaurant";
-
+import userAgent from 'express-useragent';
+import restAdminRouter from "./restaurantAdmin";
+import { createNewUserRest } from "../handlers/restaurantAdmin/signup/createNewUser";
+import multer from "multer";
+import { signInRestAdmin } from "../handlers/restaurantAdmin/signin/signInUser";
+import { verifyOTPRestAdmin } from "../handlers/restaurantAdmin/signin/verifyOTP";
 const app = express();
+const upload = multer()
 
 const server = http.createServer(app);
 app.use(cookieParser());
 app.set('trust proxy', true)
 app.use(cors());
 
+
 app.use(morgan("dev"));
 app.use(bodyParser.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 (async () => {
   client.on("error", (err) => console.log("❌ Redis Client Error", err));
@@ -145,9 +150,14 @@ app.put(
 );
 
 //? Restaurant EndPoints
-
+app.post("/api/auth/signup-restAdmin", createNewUserRest)
+app.post("/api/check", (req,res)=>{
+  console.log (req.body);
+})
+app.post("/api/auth/login-restAdmin",loginRateLimiter,loginValidation,handleErrors, signInRestAdmin)
+app.put("/api/auth/verifyOtp-admin",otpValidation, handleErrors, verifyOTPRestAdmin)
 app.get("/drop", dropDatabase);
-app.get("/populate", populateRestaurant);
+//app.get("/populate", populateRestaurant);
 app.get(
   "/api/restaurants",
   restaurantGetValidation,
@@ -183,6 +193,7 @@ app.get("/testVideo", testStream);
 //checkVerificationStream("642b3dd392a744e5f57c1e4b");
 app.use("/api", blockJWT, protect, userRouter);
 app.use("/api", blockJWT, protect, riderRouter);
+app.use("/api", blockJWT, protect, restAdminRouter);
 
 // app.post("/auth/login", createNewUser);
 export default server;

@@ -22,6 +22,18 @@ export const signInUser = async (
     if (user) {
       if (await compareHashedPassword(password, user.password)) {
         createAddOTP(user.email, generateOTP());
+
+        await prisma.loginInfo.create({
+          data: {
+            ipAddress: req.ip,
+            device: req.useragent?.platform || "",
+            User: {
+              connect: {
+                id: user.id,
+              },
+            },
+          },
+        });
         res
           .status(200)
           .json({ msg: "Check your email, expires in 10 minutes" });

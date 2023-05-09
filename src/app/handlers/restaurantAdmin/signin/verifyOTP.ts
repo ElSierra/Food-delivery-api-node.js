@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import prisma from "../../../../../lib/prisma/init";
 import { createJWT } from "../../../middleware/auth";
-import { userResponse } from "../../../../../interface";
+import { restaurantAdminResponse, userResponse } from "../../../../../interface";
 
-export const verifyOTP = async (
+export const verifyOTPRestAdmin = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -12,7 +12,7 @@ export const verifyOTP = async (
   const { otp } = req.body;
   console.log(otp);
   try {
-    const user = await prisma.user.findFirst({
+    const user = await prisma.restaurantAdmin.findFirst({
       where: {
         email: email,
       },
@@ -31,7 +31,7 @@ export const verifyOTP = async (
             OTP: 0,
             verified: true,
           },
-          select: userResponse,
+          select: restaurantAdminResponse,
         });
         const token = { token: createJWT(user) };
         

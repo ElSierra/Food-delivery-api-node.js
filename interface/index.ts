@@ -18,6 +18,15 @@ export const userResponse = {
   payment: true,
   preferences: true,
   balance: true,
+  loginInfo: {
+    select: {
+      id: true,
+      ipAddress: true,
+      device: true,
+      lastLoggedIn: true,
+    },
+  },
+
   orders: {
     include: {
       rider: {
@@ -37,26 +46,35 @@ export const restaurantAdminResponse = {
   name: true,
   verified: true,
   phone: true,
-  location: true,
   photo: true,
   OTP: true,
   payment: true,
   preferences: true,
   balance: true,
-  restaurant : true,
-  orders: {
-    include: {
-      rider: {
-        select: {
-          location: true,
-          phone: true,
-          email: true,
-        },
-      },
-    },
-  },
+  restaurant: true,
 };
 
+export const restaurantResponse = {
+  id: true,
+  name: true,
+  verified: true,
+  loadingImage: true,
+  available: true,
+  slug: true,
+  photo: true,
+  location: {
+    select:{
+      latitude:true,
+      longitude:true
+    },
+  },
+  category: {
+    select:{
+      type:true
+    }
+  },
+ 
+};
 
 export const riderResponse = {
   id: true,
