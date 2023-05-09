@@ -4,7 +4,7 @@ import prisma from "../../../../../lib/prisma/init";
 export const getRestaurantsByName = async (req: Request, res: Response) => {
   const { name } = req.query;
   try {
-    const restaurants = await prisma.restaurant.findMany({
+    const restaurant = await prisma.restaurant.findMany({
       include: {
         location: true,
         menu: true,
@@ -18,9 +18,9 @@ export const getRestaurantsByName = async (req: Request, res: Response) => {
       },
     });
 
-    if (restaurants) {
+    if (restaurant) {
       return res.status(200).json({
-        restaurants,
+        restaurant,
       });
     }
     return res.status(400).json({ msg: "Restaurant doesn't exist" });
