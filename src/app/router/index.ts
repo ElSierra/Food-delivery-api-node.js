@@ -72,7 +72,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 (async () => {
-  client.on("error", (err) => console.log("❌ Redis Client Error", err));
+  client.on("error", (err) => console.log("❌- Redis Client Error", err));
 
   await client
     .connect()
