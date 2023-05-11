@@ -26,6 +26,14 @@ export const userResponse = {
       lastLoggedIn: true,
     },
   },
+  like: {
+    select: { restaurantId: true },
+  },
+  dislike: {
+    select: {
+      restaurantId: true,
+    },
+  },
 
   orders: {
     include: {
@@ -52,28 +60,30 @@ export const restaurantAdminResponse = {
   preferences: true,
   balance: true,
   restaurant: true,
+  
 };
 
 export const restaurantResponse = {
   id: true,
   name: true,
+  rating : true,
   verified: true,
   loadingImage: true,
   available: true,
   slug: true,
   photo: true,
   location: {
-    select:{
-      latitude:true,
-      longitude:true
+    select: {
+      latitude: true,
+      longitude: true,
     },
   },
+  
   category: {
-    select:{
-      type:true
-    }
+    select: {
+      type: true,
+    },
   },
- 
 };
 
 export const riderResponse = {
@@ -96,6 +106,7 @@ export const riderResponse = {
           email: true,
         },
       },
+      ratings: true,
       restaurant: {
         select: {
           location: true,

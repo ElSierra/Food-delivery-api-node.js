@@ -105,7 +105,11 @@ export const restaurantGetValidation = [
 
 export const CreateRestaurantValidation = [
   body("location").exists().isLatLong().withMessage("Invalid location format."),
-  body("category").exists().withMessage('empty'),
+  body("category").exists().withMessage("empty"),
   body("address").exists().withMessage("Invalid address format."),
   body("name").exists().isString().withMessage("Invalid"),
+];
+export const rateRestaurantsValidation = [
+  query("restaurant").exists().isMongoId().withMessage("Invalid"),
+  query("like").exists().isBoolean().withMessage("Not Boolean"),
 ];

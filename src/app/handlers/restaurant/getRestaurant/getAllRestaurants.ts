@@ -8,6 +8,7 @@ export const getRestaurantsAll = async (req: Request, res: Response) => {
       select: restaurantResponse
     });
     if (restaurant) {
+      
       return res.status(200).json({
         restaurant,
       });

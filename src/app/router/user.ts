@@ -1,3 +1,4 @@
+
 import { Response } from "express";
 import { Request } from "express-serve-static-core";
 import { Router } from "express";
@@ -8,6 +9,7 @@ import {
   locationUpdateValidation,
   orderFoodValidation,
   makePaymentValidation,
+  rateRestaurantsValidation,
 } from "../middleware/inputValidation";
 import { passwordChangeHandler } from "../handlers/user/signin/passwordChange";
 import { handleErrors } from "../middleware/handleErrors";
@@ -20,6 +22,11 @@ import {
 } from "../handlers/user/profile/uploadProfilePicture";
 import { orderFood } from "../handlers/user/order/orderFood";
 import { makePayment } from "../handlers/user/order/makePayment";
+import {
+  checkIfUserLikedMiddleWare,
+  disLikeRestaurants,
+  likeRestaurants,
+} from "../handlers/restaurant/createRestaurant/rateRestaurant";
 
 const userRouter = Router();
 
@@ -48,6 +55,24 @@ userRouter.put(
   makePaymentValidation,
   handleErrors,
   makePayment
+);
+
+userRouter.get(
+  "/rate-restaurant",
+  rateRestaurantsValidation,
+  handleErrors,checkIfUserLikedMiddleWare,
+  (req: any, res: Response) => {
+
+    console.log(req.query)
+    if (req.query.like === 'true') {
+     
+    return  likeRestaurants(req, res);
+    } else if (req.query.like === 'false') {
+    return  disLikeRestaurants(req, res);
+    }else {
+    return  res.status(400).json({error: 'Error occurred'})
+    }
+  }
 );
 
 userRouter.put("/upload-avatar", uploadPhotoOcean, updateProfilePicOcean);
