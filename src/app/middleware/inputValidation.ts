@@ -113,3 +113,6 @@ export const rateRestaurantsValidation = [
   query("restaurant").exists().isMongoId().withMessage("Invalid"),
   query("like").exists().isBoolean().withMessage("Not Boolean"),
 ];
+export const getSingleRestaurantValidation = [
+  param('id').exists().isMongoId().withMessage("invalid")
+]

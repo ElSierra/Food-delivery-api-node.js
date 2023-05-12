@@ -60,13 +60,13 @@ export const restaurantAdminResponse = {
   preferences: true,
   balance: true,
   restaurant: true,
-  
 };
 
 export const restaurantResponse = {
   id: true,
   name: true,
-  rating : true,
+  rating: true,
+  ratingAmount: true,
   verified: true,
   loadingImage: true,
   available: true,
@@ -78,7 +78,7 @@ export const restaurantResponse = {
       longitude: true,
     },
   },
-  
+
   category: {
     select: {
       type: true,
@@ -112,6 +112,32 @@ export const riderResponse = {
           location: true,
         },
       },
+    },
+  },
+};
+
+export const singleRestaurantResponse = {
+  id: true,
+  name: true,
+  rating: true,
+  verified: true,
+  loadingImage: true,
+  available: true,
+  slug: true,
+  photo: true,
+  ratingAmount: true,
+  menu: true,
+  orders: true,
+  location: {
+    select: {
+      latitude: true,
+      longitude: true,
+    },
+  },
+
+  category: {
+    select: {
+      type: true,
     },
   },
 };

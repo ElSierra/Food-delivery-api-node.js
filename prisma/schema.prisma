@@ -64,24 +64,25 @@ model Rider {
 }
 
 model Restaurant {
-  id                String           @id @default(auto()) @map("_id") @db.ObjectId
-  name              String
-  verified          Boolean          @default(false)
-  loadingImage      String
-  available         Boolean          @default(true)
-  slug              String
-  category          Category[]
-  location          Location?        @relation(fields: [locationId], references: [id])
-  photo             String
-  menu              Menu[]
-  like              Like[]
-  dislike           DisLike[]
-  rating            String?
-  orders            Orders[]
-  createdAt         DateTime         @default(now())
-  updatedAt         DateTime         @updatedAt
-  locationId        String?          @db.ObjectId
-  LoginInfo         LoginInfo[]
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  verified     Boolean    @default(false)
+  loadingImage String
+  available    Boolean    @default(true)
+  slug         String
+  category     Category[]
+  location     Location?  @relation(fields: [locationId], references: [id])
+  photo        String
+  menu         Menu[]
+  like         Like[]
+  dislike      DisLike[]
+  rating       String?  @default("0")
+  ratingAmount String?
+  orders       Orders[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  locationId   String?    @db.ObjectId
+
   RestaurantAdmin   RestaurantAdmin? @relation(fields: [restaurantAdminId], references: [id])
   restaurantAdminId String?          @db.ObjectId
 }
@@ -190,14 +191,13 @@ model Preferences {
 }
 
 model LoginInfo {
-  id                String           @id @default(auto()) @map("_id") @db.ObjectId
-  ipAddress         String
-  device            String
-  lastLoggedIn      DateTime         @default(now())
-  Rider             Rider?           @relation(fields: [riderId], references: [id])
-  riderId           String?          @db.ObjectId
-  Restaurant        Restaurant?      @relation(fields: [restaurantId], references: [id])
-  restaurantId      String?          @db.ObjectId
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  ipAddress    String
+  device       String
+  lastLoggedIn DateTime @default(now())
+  Rider        Rider?   @relation(fields: [riderId], references: [id])
+  riderId      String?  @db.ObjectId
+
   User              User?            @relation(fields: [userId], references: [id])
   userId            String?          @db.ObjectId
   RestauarntAdmin   RestaurantAdmin? @relation(fields: [restauarntAdminId], references: [id])

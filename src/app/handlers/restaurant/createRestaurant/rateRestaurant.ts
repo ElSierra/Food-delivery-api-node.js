@@ -99,15 +99,16 @@ export const disLikeRestaurants = async (req: any, res: Response) => {
       const total =
         (rest.like.length / (rest.dislike.length + rest.like.length)) * 100;
 
-      await prisma.restaurant.update({
+    const restRated =  await prisma.restaurant.update({
         where: {
           id: restaurant,
         },
         data: {
-          rating: total.toFixed().toString(),
+          rating: total.toPrecision(3).toString(),
+          ratingAmount: (rest.dislike.length + rest.like.length).toString(),
         },
       });
-      return res.status(200).json({ msg: total });
+      return res.status(200).json({ msg: restRated.rating, rA: restRated.ratingAmount });
     }
     return res.status(400).json({ msg: "bad request" });
   } catch (e: any) {

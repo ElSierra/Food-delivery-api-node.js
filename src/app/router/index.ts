@@ -6,6 +6,7 @@ import userRouter from "./user";
 
 import {
   emailJWTValidation,
+  getSingleRestaurantValidation,
   loginValidation,
   otpValidation,
   resetPasswordValidation,
@@ -57,6 +58,7 @@ import { createNewUserRest } from "../handlers/restaurantAdmin/signup/createNewU
 import multer from "multer";
 import { signInRestAdmin } from "../handlers/restaurantAdmin/signin/signInUser";
 import { verifyOTPRestAdmin } from "../handlers/restaurantAdmin/signin/verifyOTP";
+import { getSingleRestaurant } from "../handlers/restaurant/getRestaurant/getSingleRestaurant";
 const app = express();
 const upload = multer()
 
@@ -179,6 +181,7 @@ app.get(
     }
   }
 );
+app.get("/api/restaurant/:id",getSingleRestaurantValidation, handleErrors, getSingleRestaurant);
 
 //? Misc EndPoints
 // app.get("/pic/:id", (req, res) => {
