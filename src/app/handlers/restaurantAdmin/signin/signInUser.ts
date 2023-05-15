@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import prisma from "../../../../../lib/prisma/init";
 import { compareHashedPassword, createJWT } from "../../../middleware/auth";
-import { createAddOTP } from "../../../modules/auth/handleOTP";
+import { createAddOTP } from "../../../modules/auth/handleOTPForRestAdmin";
 import { generateOTP } from "../../../modules/auth/generateOTP";
 
 export const signInRestAdmin = async (

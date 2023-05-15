@@ -4,7 +4,7 @@ import { sendOTP } from "../email/sendOTP";
 
 export const createAddOTP = async (email: string, OTP: number) => {
   try {
-    const user = await prisma.user.update({
+    const user = await prisma.restaurantAdmin.update({
       where: {
         email,
       },
@@ -13,7 +13,7 @@ export const createAddOTP = async (email: string, OTP: number) => {
       },
     });
     setTimeout(async () => {
-      const user = await prisma.user.update({
+      const user = await prisma.restaurantAdmin.update({
         where: {
           email,
         },

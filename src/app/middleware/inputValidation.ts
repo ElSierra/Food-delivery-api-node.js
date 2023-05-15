@@ -84,14 +84,13 @@ export const locationUpdateValidation = [
 ];
 
 export const orderFoodValidation = [
-  body("menuId").exists().isMongoId().withMessage("Not Valid MenuId"),
+  body("menuList").exists().isArray().withMessage("Not Valid MenuId Array"),
   body("restaurantId").exists().isMongoId().withMessage("Not Valid MenuId"),
-  body("quantity").exists().isInt({ min: 1 }).withMessage("Not number"),
 ];
 
 export const makePaymentValidation = [
   body("orderId").exists().isMongoId().withMessage("Not Valid MenuId"),
-  body("amount").exists().isFloat({ min: 10 }).withMessage("Not valid amount"),
+
 ];
 export const retryOTPValidation = [
   query("email").exists().isEmail().withMessage("Not Valid Email"),
@@ -114,5 +113,11 @@ export const rateRestaurantsValidation = [
   query("like").exists().isBoolean().withMessage("Not Boolean"),
 ];
 export const getSingleRestaurantValidation = [
-  param('id').exists().isMongoId().withMessage("invalid")
-]
+  param("id").exists().isMongoId().withMessage("invalid"),
+];
+
+export const createMenuValidation = [
+  query("restaurant").exists().isMongoId().withMessage("Invalid"),
+  body("name").exists().isString().withMessage("Invalid"),
+  body("price").exists().isFloat().withMessage("Invalid"),
+];
