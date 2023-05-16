@@ -59,6 +59,7 @@ import multer from "multer";
 import { signInRestAdmin } from "../handlers/restaurantAdmin/signin/signInUser";
 import { verifyOTPRestAdmin } from "../handlers/restaurantAdmin/signin/verifyOTP";
 import { getSingleRestaurant } from "../handlers/restaurant/getRestaurant/getSingleRestaurant";
+import { getUserMenu } from "../handlers/restaurant/getUserMenu";
 const app = express();
 const upload = multer()
 
@@ -194,6 +195,7 @@ app.get("/api/restaurant/:id",getSingleRestaurantValidation, handleErrors, getSi
 // });
 
 app.get("/testVideo", testStream);
+app.get('/getMenu',getUserMenu )
 //checkVerificationStream("642b3dd392a744e5f57c1e4b");
 app.use("/api", blockJWT, protect, userRouter);
 app.use("/api", blockJWT, protect, riderRouter);

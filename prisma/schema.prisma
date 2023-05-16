@@ -76,7 +76,7 @@ model Restaurant {
   menu         Menu[]
   like         Like[]
   dislike      DisLike[]
-  rating       String?  @default("0")
+  rating       String?    @default("0")
   ratingAmount String?
   orders       Orders[]
   createdAt    DateTime   @default(now())
