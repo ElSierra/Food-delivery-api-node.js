@@ -8,15 +8,16 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
-  email    String  @unique
-  phone    String
-  disable  Boolean @default(false)
-  name     String
-  verified Boolean @default(false)
-  OTP      Int     @default(0)
-  password String
-  photo    String?
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  email        String  @unique
+  phone        String
+  disable      Boolean @default(false)
+  name         String
+  verified     Boolean @default(false)
+  OTP          Int     @default(0)
+  password     String
+  photo        String?
+  photoPreview String?
 
   balance  Float
   location Location? @relation(fields: [locationId], references: [id])

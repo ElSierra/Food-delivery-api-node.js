@@ -27,6 +27,7 @@ import {
   disLikeRestaurants,
   likeRestaurants,
 } from "../handlers/restaurant/createRestaurant/rateRestaurant";
+import { updatePreview } from "../handlers/user/profile/updatePreview";
 
 const userRouter = Router();
 
@@ -76,5 +77,6 @@ userRouter.get(
 );
 
 userRouter.put("/upload-avatar", uploadPhotoOcean, updateProfilePicOcean);
+userRouter.put('/auth/upload-preview', updatePreview,  uploadPhotoOcean, updateProfilePicOcean)
 
 export default userRouter;
