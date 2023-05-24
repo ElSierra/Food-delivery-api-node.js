@@ -90,7 +90,6 @@ export const orderFoodValidation = [
 
 export const makePaymentValidation = [
   body("orderId").exists().isMongoId().withMessage("Not Valid MenuId"),
-
 ];
 export const retryOTPValidation = [
   query("email").exists().isEmail().withMessage("Not Valid Email"),
@@ -121,3 +120,16 @@ export const createMenuValidation = [
   body("name").exists().isString().withMessage("Invalid"),
   body("price").exists().isFloat().withMessage("Invalid"),
 ];
+
+export const updateInfoValidation = [
+  body("name").isString().optional(),
+  body("phone")
+    .exists()
+    .withMessage("Phone field is required.")
+    .isMobilePhone(["en-NG", "en-GH"])
+    .withMessage("Invalid phone number format."),
+];
+
+export const uploadPhotoPreviewValidation = [
+  body("photoPreview").isDataURI().exists()
+]

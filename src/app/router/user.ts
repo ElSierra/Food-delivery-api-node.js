@@ -1,4 +1,3 @@
-
 import { Response } from "express";
 import { Request } from "express-serve-static-core";
 import { Router } from "express";
@@ -10,6 +9,8 @@ import {
   orderFoodValidation,
   makePaymentValidation,
   rateRestaurantsValidation,
+  uploadPhotoPreviewValidation,
+  updateInfoValidation,
 } from "../middleware/inputValidation";
 import { passwordChangeHandler } from "../handlers/user/signin/passwordChange";
 import { handleErrors } from "../middleware/handleErrors";
@@ -28,6 +29,7 @@ import {
   likeRestaurants,
 } from "../handlers/restaurant/createRestaurant/rateRestaurant";
 import { updatePreview } from "../handlers/user/profile/updatePreview";
+import { updateProfileInfo } from "../handlers/user/profile/updateProfile";
 
 const userRouter = Router();
 
@@ -61,22 +63,28 @@ userRouter.put(
 userRouter.get(
   "/rate-restaurant",
   rateRestaurantsValidation,
-  handleErrors,checkIfUserLikedMiddleWare,
+  handleErrors,
+  checkIfUserLikedMiddleWare,
   (req: any, res: Response) => {
-
-    console.log(req.query)
-    if (req.query.like === 'true') {
-     
-    return  likeRestaurants(req, res);
-    } else if (req.query.like === 'false') {
-    return  disLikeRestaurants(req, res);
-    }else {
-    return  res.status(400).json({error: 'Error occurred'})
+    console.log(req.query);
+    if (req.query.like === "true") {
+      return likeRestaurants(req, res);
+    } else if (req.query.like === "false") {
+      return disLikeRestaurants(req, res);
+    } else {
+      return res.status(400).json({ error: "Error occurred" });
     }
   }
 );
 
 userRouter.put("/upload-avatar", uploadPhotoOcean, updateProfilePicOcean);
-userRouter.put('/auth/upload-preview', updatePreview,  uploadPhotoOcean, updateProfilePicOcean)
+userRouter.put(
+  "/upload-preview",
+  uploadPhotoPreviewValidation,
+  updatePreview,
+  uploadPhotoOcean,
+  updateProfilePicOcean
+);
+userRouter.put("/auth/update-info", updateInfoValidation, updateProfileInfo);
 
 export default userRouter;

@@ -71,8 +71,8 @@ app.use(cors());
 
 
 app.use(morgan("dev"));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: '5mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }));
 
 (async () => {
   client.on("error", (err) => console.log("❌- Redis Client Error", err));
