@@ -1,7 +1,7 @@
 export const template = (link: string, name: string) => {
   const template = `<!DOCTYPE html>
   <html lang="en">
-  
+
   <head>
       <meta charset="UTF-8">
       <link rel="icon" type="image/x-icon"
