@@ -6,46 +6,49 @@ import { S3Client } from "@aws-sdk/client-s3";
 import { s3Config } from "../../../../../lib/mutler/digitalOcean";
 import { SpacesBucketName } from "../../../../../lib/mutler/digitalOcean";
 import fs from "fs";
+import { Worker } from "worker_threads";
 export const updatePreview = async (
   req: any,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const imagePath = (await base64toFile(req.body.photoPreview, {
-      filePath: "./uploads",
-      randomizeFileNameLength: 14,
-      types: ["png"],
-      fileMaxSize: 3145728,
-    })) as string;
-    console.log(imagePath);
+    const worker = new Worker("./src/app/worker/saveFile.js", {
+      workerData: { msg: req.body.photoPreview },
+    });
+    //console.log(req.body.photoPreview)
+    worker.on("message", (data) => {
+      console.log("🚀 ~ file: updatePreview.ts:20 ~ worker.on ~ data:", data)
+      req.file = data.imagePath;
 
-    req.file = imagePath;
-
-    if (req.file) {
-      new Upload({
-        client: s3Config,
-        params: {
-          ACL: "public-read",
-          Bucket: SpacesBucketName,
-          Key: `${Date.now().toString()}.jpg`,
-          Body: fs.readFileSync(`./uploads/${imagePath}`),
-        },
-        tags: [], // optional tags
-        queueSize: 4, // optional concurrency configuration
-        partSize: 1024 * 1024 * 5, // optional size of each part, in bytes, at least 5MB
-        leavePartsOnError: false, // optional manually handle dropped parts
-      })
-        .done()
-        .then((data: any) => {
-          console.log("data is", data);
-          console.log(`${data.Location}`);
-          req.file = {
-            location: data.Location,
-          };
-          next();
-        });
-    }
+      if (req.file) {
+        new Upload({
+          client: s3Config,
+          params: {
+            ACL: "public-read",
+            Bucket: SpacesBucketName,
+            Key: `${Date.now().toString()}.jpg`,
+            Body: data.uploadDir,
+          },
+          tags: [], // optional tags
+          queueSize: 4, // optional concurrency configuration
+          partSize: 1024 * 1024 * 5, // optional size of each part, in bytes, at least 5MB
+          leavePartsOnError: false, // optional manually handle dropped parts
+        })
+          .done()
+          .then((data: any) => {
+            console.log("data is", data);
+            console.log(`${data.Location}`);
+            req.file = {
+              location: data.Location,
+            };
+            next();
+          });
+      }
+    });
+    worker.on("error", () => {
+      res.json({ error: "error" });
+    });
   } catch (e) {
     return res.status(400).json({ msg: "error occurred" });
   }

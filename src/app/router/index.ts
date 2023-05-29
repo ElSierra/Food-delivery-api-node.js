@@ -52,7 +52,7 @@ import { populateRestaurant } from "../handlers/restaurant/getRestaurant/populat
 import { getSkipRestaurantsByName } from "../handlers/restaurant/getRestaurant/getSkipRestaurantsByName";
 import { getRestaurantsByName } from "../handlers/restaurant/getRestaurant/getRestaurantsByName";
 import { getRestaurantsSkip } from "../handlers/restaurant/getRestaurant/getSkipRestauarant";
-import userAgent from 'express-useragent';
+import userAgent from "express-useragent";
 import restAdminRouter from "./restaurantAdmin";
 import { createNewUserRest } from "../handlers/restaurantAdmin/signup/createNewUser";
 import multer from "multer";
@@ -60,19 +60,19 @@ import { signInRestAdmin } from "../handlers/restaurantAdmin/signin/signInUser";
 import { verifyOTPRestAdmin } from "../handlers/restaurantAdmin/signin/verifyOTP";
 import { getSingleRestaurant } from "../handlers/restaurant/getRestaurant/getSingleRestaurant";
 import { getUserMenu } from "../handlers/restaurant/getUserMenu";
+import { Worker } from "worker_threads";
 const app = express();
-const upload = multer()
+const upload = multer();
 
 const server = http.createServer(app);
-app.use(userAgent.express())
+app.use(userAgent.express());
 app.use(cookieParser());
-app.set('trust proxy', true)
+app.set("trust proxy", true);
 app.use(cors());
 
-
 app.use(morgan("dev"));
-app.use(bodyParser.json({ limit: '5mb' }));
-app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }));
+app.use(bodyParser.json({ limit: "5mb" }));
+app.use(bodyParser.urlencoded({ extended: true, limit: "5mb" }));
 
 (async () => {
   client.on("error", (err) => console.log("❌- Redis Client Error", err));
@@ -88,7 +88,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }));
 })();
 
 app.get("/", async (req, res) => {
- console.log( req.ip )
+  console.log(req.ip);
   res.status(200).json({ success: "👍 Okay" });
 });
 
@@ -154,12 +154,23 @@ app.put(
 );
 
 //? Restaurant EndPoints
-app.post("/api/auth/signup-restAdmin", createNewUserRest)
-app.post("/api/check", (req,res)=>{
-  console.log (req.body);
-})
-app.post("/api/auth/login-restAdmin",loginRateLimiter,loginValidation,handleErrors, signInRestAdmin)
-app.put("/api/auth/verifyOtp-admin",otpValidation, handleErrors, verifyOTPRestAdmin)
+app.post("/api/auth/signup-restAdmin", createNewUserRest);
+app.post("/api/check", (req, res) => {
+  console.log(req.body);
+});
+app.post(
+  "/api/auth/login-restAdmin",
+  loginRateLimiter,
+  loginValidation,
+  handleErrors,
+  signInRestAdmin
+);
+app.put(
+  "/api/auth/verifyOtp-admin",
+  otpValidation,
+  handleErrors,
+  verifyOTPRestAdmin
+);
 app.get("/drop", dropDatabase);
 //app.get("/populate", populateRestaurant);
 app.get(
@@ -182,7 +193,15 @@ app.get(
     }
   }
 );
-app.get("/api/restaurant/:id",getSingleRestaurantValidation, handleErrors, getSingleRestaurant);
+app.get(
+  "/api/restaurant/:id",
+  getSingleRestaurantValidation,
+  handleErrors,
+  getSingleRestaurant
+);
+app.get("/file/:id", (req, res) => {
+  
+});
 
 //? Misc EndPoints
 // app.get("/pic/:id", (req, res) => {
@@ -195,7 +214,7 @@ app.get("/api/restaurant/:id",getSingleRestaurantValidation, handleErrors, getSi
 // });
 
 app.get("/testVideo", testStream);
-app.get('/getMenu',getUserMenu )
+app.get("/getMenu", getUserMenu);
 //checkVerificationStream("642b3dd392a744e5f57c1e4b");
 app.use("/api", blockJWT, protect, userRouter);
 app.use("/api", blockJWT, protect, riderRouter);
