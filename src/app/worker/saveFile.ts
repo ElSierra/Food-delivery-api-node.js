@@ -3,6 +3,7 @@ import { parentPort, workerData } from "worker_threads";
 import fs from "fs";
 
 const handleConvertImage = async () => {
+  
   const imagePath = (await base64toFile(workerData.msg, {
     filePath: "./uploads",
     randomizeFileNameLength: 14,
@@ -11,9 +12,9 @@ const handleConvertImage = async () => {
   })) as string;
   console.log(imagePath);
 
- const uploadDir =  fs.readFileSync(`./uploads/${imagePath}`);
+  const uploadDir = fs.readFileSync(`./uploads/${imagePath}`);
 
-  parentPort?.postMessage({imagePath, uploadDir});
+  parentPort?.postMessage({ imagePath, uploadDir,});
 };
 
 handleConvertImage();

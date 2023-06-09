@@ -60,11 +60,13 @@ import { signInRestAdmin } from "../handlers/restaurantAdmin/signin/signInUser";
 import { verifyOTPRestAdmin } from "../handlers/restaurantAdmin/signin/verifyOTP";
 import { getSingleRestaurant } from "../handlers/restaurant/getRestaurant/getSingleRestaurant";
 import { getUserMenu } from "../handlers/restaurant/getUserMenu";
+import helmet from 'helmet'
 import { Worker } from "worker_threads";
 const app = express();
 const upload = multer();
 
 const server = http.createServer(app);
+app.use(helmet())
 app.use(userAgent.express());
 app.use(cookieParser());
 app.set("trust proxy", true);

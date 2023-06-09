@@ -48,6 +48,7 @@
     "express-useragent": "^1.0.15",
     "express-validator": "^6.15.0",
     "generate-password": "^1.7.0",
+    "helmet": "^7.0.0",
     "ip": "^2.0.0",
     "jsonwebtoken": "^9.0.0",
     "mongodb": "^5.1.0",
