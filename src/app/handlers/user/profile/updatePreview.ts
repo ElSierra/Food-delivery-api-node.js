@@ -14,7 +14,7 @@ export const updatePreview = async (
 ) => {
   try {
     console.log(fs.readFileSync("saveFile.js"));
-    const worker = new Worker("saveFile.js", {
+    const worker = new Worker("./saveFile.js", {
       workerData: { msg: req.body.photoPreview },
     });
     //console.log(req.body.photoPreview)
