@@ -13,13 +13,12 @@ export const updatePreview = async (
   next: NextFunction
 ) => {
   try {
-    console.log(fs.readFileSync("saveFile.js"));
-    const worker = new Worker("./saveFile.js", {
+    const worker = new Worker("./src/app/worker/saveFile.js", {
       workerData: { msg: req.body.photoPreview },
     });
     //console.log(req.body.photoPreview)
     worker.on("message", (data) => {
-      console.log("🚀 ~ file: updatePreview.ts:20 ~ worker.on ~ data:", data);
+      console.log("🚀 ~ file: updatePreview.ts:20 ~ worker.on ~ data:", data)
       req.file = data.imagePath;
 
       if (req.file) {
@@ -36,9 +35,8 @@ export const updatePreview = async (
           partSize: 1024 * 1024 * 5, // optional size of each part, in bytes, at least 5MB
           leavePartsOnError: false, // optional manually handle dropped parts
         })
-          .done()
-          .catch((error: any) => {
-            return res.status(400).json({ msg: "worker failed to start" });
+          .done().catch((error: any)=>{
+            return res.status(400).json({msg: "worker failed to start"})
           })
           .then((data: any) => {
             console.log("data is", data);
@@ -48,13 +46,18 @@ export const updatePreview = async (
             };
             next();
           });
+
+       
       }
+      return res.status(400).json({msg: "worker failed to start"})
     });
-    worker.on("error", (error: any) => {
-      console.log("🚀 ~ file: updatePreview.ts:55 ~ worker.on ~ error:", error);
-      return res.status(500).json({ error: "error occurred (Worker issue)" });
+    worker.on("error", (error:any) => {
+  console.log("🚀 ~ file: updatePreview.ts:55 ~ worker.on ~ error:", error)
+     return res.status(500).json({ error: "error occurred (Worker issue)" });
     });
+  
   } catch (e) {
+    console.log("🚀 ~ file: updatePreview.ts:60 ~ worker.on ~ error:", e)
     return res.status(400).json({ msg: "error occurred" });
   }
 };
