@@ -13,7 +13,7 @@ export const updatePreview = async (
   next: NextFunction
 ) => {
   try {
-    const worker = new Worker("/src/app/worker/saveFile.js", {
+    const worker = new Worker(`./src/app/worker/saveFile.js`, {
       workerData: { msg: req.body.photoPreview },
     });
     //console.log(req.body.photoPreview)
@@ -48,7 +48,6 @@ export const updatePreview = async (
             next();
           });
       }
-      return res.status(400).json({ msg: "worker failed to start" });
     });
     worker.on("error", (error: any) => {
       console.log("🚀 ~ file: updatePreview.ts:55 ~ worker.on ~ error:", error);
