@@ -13,7 +13,7 @@ export const updatePreview = async (
   next: NextFunction
 ) => {
   try {
-    const worker = new Worker("./src/app/worker/saveFile.js", {
+    const worker = new Worker("/src/app/worker/saveFile.js", {
       workerData: { msg: req.body.photoPreview },
     });
     //console.log(req.body.photoPreview)
