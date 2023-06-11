@@ -18,7 +18,7 @@ export const updatePreview = async (
     });
     //console.log(req.body.photoPreview)
     worker.on("message", (data) => {
-      console.log("🚀 ~ file: updatePreview.ts:20 ~ worker.on ~ data:", data)
+      console.log("🚀 ~ file: updatePreview.ts:20 ~ worker.on ~ data:", data);
       req.file = data.imagePath;
 
       if (req.file) {
@@ -35,8 +35,9 @@ export const updatePreview = async (
           partSize: 1024 * 1024 * 5, // optional size of each part, in bytes, at least 5MB
           leavePartsOnError: false, // optional manually handle dropped parts
         })
-          .done().catch((error: any)=>{
-            return res.status(400).json({msg: "worker failed to start"})
+          .done()
+          .catch((error: any) => {
+            return res.status(400).json({ msg: "worker failed to start" });
           })
           .then((data: any) => {
             console.log("data is", data);
@@ -46,13 +47,12 @@ export const updatePreview = async (
             };
             next();
           });
-
-       
       }
-      return res.status(400).json({msg: "worker failed to start"})
+      return res.status(400).json({ msg: "worker failed to start" });
     });
-    worker.on("error", () => {
-     return res.status(500).json({ error: "error occurred (Worker issue)" });
+    worker.on("error", (error: any) => {
+      console.log("🚀 ~ file: updatePreview.ts:55 ~ worker.on ~ error:", error);
+      return res.status(500).json({ error: "error occurred (Worker issue)" });
     });
   } catch (e) {
     return res.status(400).json({ msg: "error occurred" });
