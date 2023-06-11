@@ -93,6 +93,8 @@ export const uploadPhotoOcean = (
   res: Response,
   next: NextFunction
 ) => {
+
+
   const uploadHandler = uploadOcean.single("photo");
 
   uploadHandler(req, res, (error) => {

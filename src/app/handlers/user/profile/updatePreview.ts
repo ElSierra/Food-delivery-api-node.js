@@ -35,7 +35,9 @@ export const updatePreview = async (
           partSize: 1024 * 1024 * 5, // optional size of each part, in bytes, at least 5MB
           leavePartsOnError: false, // optional manually handle dropped parts
         })
-          .done()
+          .done().catch((error: any)=>{
+            return res.status(400).json({msg: "worker failed to start"})
+          })
           .then((data: any) => {
             console.log("data is", data);
             console.log(`${data.Location}`);
@@ -45,12 +47,12 @@ export const updatePreview = async (
             next();
           });
 
-          return;
+       
       }
       return res.status(400).json({msg: "worker failed to start"})
     });
     worker.on("error", () => {
-      res.json({ error: "error" });
+     return res.status(500).json({ error: "error occurred (Worker issue)" });
     });
   } catch (e) {
     return res.status(400).json({ msg: "error occurred" });
