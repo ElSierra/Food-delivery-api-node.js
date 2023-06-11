@@ -13,6 +13,7 @@ export const updatePreview = async (
   next: NextFunction
 ) => {
   try {
+    console.log(fs.readFileSync("./src/app/worker/saveFile.js"));
     const worker = new Worker(`./src/app/worker/saveFile.js`, {
       workerData: { msg: req.body.photoPreview },
     });
