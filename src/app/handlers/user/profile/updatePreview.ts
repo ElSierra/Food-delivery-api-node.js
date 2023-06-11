@@ -44,7 +44,10 @@ export const updatePreview = async (
             };
             next();
           });
+
+          return;
       }
+      return res.status(400).json({msg: "worker failed to start"})
     });
     worker.on("error", () => {
       res.json({ error: "error" });
